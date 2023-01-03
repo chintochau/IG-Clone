@@ -13,6 +13,8 @@ class NotificationViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Notification"
+        
+        view.backgroundColor = .systemBackground
 
         // Do any additional setup after loading the view.
     }

@@ -13,6 +13,8 @@ class ExploreViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = "Explore"
+        
+        view.backgroundColor = .systemBackground
         // Do any additional setup after loading the view.
     }
     

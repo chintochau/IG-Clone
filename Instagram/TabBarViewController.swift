@@ -9,17 +9,26 @@ import UIKit
 
 class TabBarViewController: UITabBarController {
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        
+        
+        guard let email = UserDefaults.standard.string(forKey: "email"),
+              let username = UserDefaults.standard.string(forKey: "username") else {
+            return
+        }
+        
+        self.tabBar.tintColor = .label
+        
+        let currentUser = User(username: username, email: email)
+        
         //Define VC
-        let home =          HomeViewController()
-        let explore =       ExploreViewController()
-        let camera =        CameraViewController()
-        let notification =  NotificationViewController()
-        let profile =       ProfileViewController()
+        let home = HomeViewController()
+        let explore = ExploreViewController()
+        let camera = CameraViewController()
+        let notification = NotificationViewController()
+        let profile = ProfileViewController(user: currentUser)
         
         let nav1 = UINavigationController(rootViewController: home)
         let nav2 = UINavigationController(rootViewController: explore)
@@ -33,6 +42,13 @@ class TabBarViewController: UITabBarController {
         nav3.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "plus"), tag: 3)
         nav4.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "heart"), tag: 4)
         nav5.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 5)
+        
+        nav1.navigationBar.tintColor = .label
+        nav2.navigationBar.tintColor = .label
+        nav3.navigationBar.tintColor = .label
+        nav4.navigationBar.tintColor = .label
+        nav5.navigationBar.tintColor = .label
+        
         
         // set controllers
         self.setViewControllers([nav1,nav2,nav3,nav4,nav5], animated: false)

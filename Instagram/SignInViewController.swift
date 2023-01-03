@@ -15,6 +15,7 @@ class SignInViewController: UIViewController {
     private let emailTextField:IGTextField = {
         let textField = IGTextField()
         textField.placeholder = "Email Address"
+        textField.text = "jj@jj.com"
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         textField.autocorrectionType = .no
@@ -24,6 +25,7 @@ class SignInViewController: UIViewController {
     private let passwordField:IGTextField = {
         let textField = IGTextField()
         textField.placeholder = "Password"
+        textField.text = "password"
         textField.keyboardType = .default
         textField.returnKeyType = .continue
         textField.autocorrectionType = .no
@@ -113,7 +115,19 @@ class SignInViewController: UIViewController {
         
         
         // perform signin
-        //        AuthManager.shared.signIn(email: <#T##String#>, password: <#T##String#>, completion: <#T##(Result<User, Error>) -> Void#>)
+        AuthManager.shared.signIn(email: email, password: password) { [weak self] result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success:
+                    let vc = TabBarViewController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self?.present(vc,animated: true)
+                    
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
     
     

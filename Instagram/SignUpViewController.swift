@@ -23,6 +23,7 @@ class SignUpViewController: UIViewController {
     private let emailTextField:IGTextField = {
         let textField = IGTextField()
         textField.placeholder = "Email Address"
+        textField.text = "jj@jj.com"
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         textField.autocorrectionType = .no
@@ -32,6 +33,7 @@ class SignUpViewController: UIViewController {
     private let usernameField:IGTextField = {
         let textField = IGTextField()
         textField.placeholder = "Username"
+        textField.text = "jjchau"
         textField.keyboardType = .default
         textField.returnKeyType = .next
         textField.autocorrectionType = .no
@@ -41,6 +43,7 @@ class SignUpViewController: UIViewController {
     private let passwordField:IGTextField = {
         let textField = IGTextField()
         textField.placeholder = "Create Password"
+        textField.text = "password"
         textField.keyboardType = .default
         textField.returnKeyType = .continue
         textField.autocorrectionType = .no
@@ -188,7 +191,6 @@ class SignUpViewController: UIViewController {
             case .success(let user):
                 UserDefaults.standard.setValue(user.email, forKey: "email")
                 UserDefaults.standard.setValue(user.username, forKey: "username")
-                
                 
                 self?.navigationController?.popToRootViewController(animated: true)
                 self?.completion?()
