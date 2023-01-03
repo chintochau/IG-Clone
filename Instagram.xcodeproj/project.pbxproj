@@ -33,6 +33,10 @@
 		47EA7D372963A3AF005CDC4E /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D362963A3AF005CDC4E /* StorageManager.swift */; };
 		47EA7D392963A3BD005CDC4E /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D382963A3BD005CDC4E /* AnalyticsManager.swift */; };
 		47EA7D3B2963A3CF005CDC4E /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D3A2963A3CF005CDC4E /* HapticsManager.swift */; };
+		47EA7D3D2963A4D5005CDC4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 47EA7D3C2963A4D5005CDC4E /* GoogleService-Info.plist */; };
+		47EA7D3F2963BE17005CDC4E /* SignInHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D3E2963BE17005CDC4E /* SignInHeaderView.swift */; };
+		47EA7D412963BFBC005CDC4E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D402963BFBC005CDC4E /* Extension.swift */; };
+		47EA7D432963C6CE005CDC4E /* IGTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D422963C6CE005CDC4E /* IGTextField.swift */; };
 		4E3D4DFE67ADF9B519FB1972 /* Pods_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F104F7D184271722DA81F8C7 /* Pods_Instagram.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +70,10 @@
 		47EA7D362963A3AF005CDC4E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		47EA7D382963A3BD005CDC4E /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		47EA7D3A2963A3CF005CDC4E /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
+		47EA7D3C2963A4D5005CDC4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		47EA7D3E2963BE17005CDC4E /* SignInHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInHeaderView.swift; sourceTree = "<group>"; };
+		47EA7D402963BFBC005CDC4E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		47EA7D422963C6CE005CDC4E /* IGTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGTextField.swift; sourceTree = "<group>"; };
 		4E79224EE27A3B4B79FEE9D3 /* Pods-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Instagram.debug.xcconfig"; path = "Target Support Files/Pods-Instagram/Pods-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
 		F104F7D184271722DA81F8C7 /* Pods_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -117,9 +125,11 @@
 		47EA7D0A29639DFB005CDC4E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				47EA7D3C2963A4D5005CDC4E /* GoogleService-Info.plist */,
 				47EA7CF629639CBD005CDC4E /* AppDelegate.swift */,
 				47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */,
 				47EA7CFF29639CBE005CDC4E /* Assets.xcassets */,
+				47EA7D402963BFBC005CDC4E /* Extension.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -127,8 +137,10 @@
 		47EA7D0B29639E03005CDC4E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				47EA7D3E2963BE17005CDC4E /* SignInHeaderView.swift */,
 				47EA7D0129639CBE005CDC4E /* LaunchScreen.storyboard */,
 				47EA7D282963A344005CDC4E /* Main.storyboard */,
+				47EA7D422963C6CE005CDC4E /* IGTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -277,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47EA7D292963A344005CDC4E /* Main.storyboard in Resources */,
+				47EA7D3D2963A4D5005CDC4E /* GoogleService-Info.plist in Resources */,
 				47EA7D0329639CBE005CDC4E /* LaunchScreen.storyboard in Resources */,
 				47EA7D0029639CBE005CDC4E /* Assets.xcassets in Resources */,
 			);
@@ -336,14 +349,17 @@
 				47EA7D312963A379005CDC4E /* Notification.swift in Sources */,
 				47EA7D372963A3AF005CDC4E /* StorageManager.swift in Sources */,
 				47EA7D272963A2BB005CDC4E /* PostViewController.swift in Sources */,
+				47EA7D3F2963BE17005CDC4E /* SignInHeaderView.swift in Sources */,
 				47EA7D132963A1E8005CDC4E /* ExploreViewController.swift in Sources */,
 				47EA7CFB29639CBD005CDC4E /* HomeViewController.swift in Sources */,
 				47EA7D1B2963A222005CDC4E /* SettingViewController.swift in Sources */,
 				47EA7D392963A3BD005CDC4E /* AnalyticsManager.swift in Sources */,
+				47EA7D412963BFBC005CDC4E /* Extension.swift in Sources */,
 				47EA7D1D2963A241005CDC4E /* TabBarViewController.swift in Sources */,
 				47EA7CF729639CBD005CDC4E /* AppDelegate.swift in Sources */,
 				47EA7D2B2963A364005CDC4E /* User.swift in Sources */,
 				47EA7D232963A2A1005CDC4E /* CaptionViewController.swift in Sources */,
+				47EA7D432963C6CE005CDC4E /* IGTextField.swift in Sources */,
 				47EA7D192963A20A005CDC4E /* ProfileViewController.swift in Sources */,
 				47EA7D352963A3A9005CDC4E /* DatabaseManager.swift in Sources */,
 				47EA7D2F2963A371005CDC4E /* Relationship.swift in Sources */,
