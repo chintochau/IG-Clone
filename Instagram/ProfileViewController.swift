@@ -50,11 +50,12 @@ class ProfileViewController: UIViewController {
         // navigate to settings page passing weak self
         let vc = SettingViewController()
         vc.title = "Create Account"
+        /// pass in weak self to setting, and to signout page to prevent retain cycle
         vc.completion = { [weak self] in
             DispatchQueue.main.async {
-                let tabVC = TabBarViewController()
-                tabVC.modalPresentationStyle = .fullScreen
-                self?.present(tabVC, animated: true)
+                let signInVC = SignInViewController()
+                signInVC.modalPresentationStyle = .fullScreen
+                self?.present(signInVC, animated: true)
             }
         }
         present(UINavigationController(rootViewController: vc),animated: true)

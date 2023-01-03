@@ -59,11 +59,14 @@ class SettingViewController: UIViewController {
             AuthManager.shared.signOut { success in
                 if success {
                     DispatchQueue.main.async {
-                        
-                        let vc = SignInViewController()
-                        let navVc = UINavigationController(rootViewController: vc)
-                        navVc.modalPresentationStyle = .fullScreen
-                        self?.present(navVc, animated: false)
+                        /// to prevent retain cycle (login, logout, login, logout)
+                        self?.dismiss(animated: true)
+                        self?.completion?()
+
+//                        let vc = SignInViewController()
+//                        let navVc = UINavigationController(rootViewController: vc)
+//                        navVc.modalPresentationStyle = .fullScreen
+//                        self?.present(navVc, animated: false)
                     }
                 }
             }
