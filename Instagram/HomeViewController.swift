@@ -63,6 +63,7 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
         case .post( let ViewModel):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostCollectionViewCell.identifier, for: indexPath) as! PostCollectionViewCell
             cell.configure(with: ViewModel)
+            cell.delegate = self
             return cell
             
         case .actions( let ViewModel):
@@ -74,11 +75,13 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
         case .likeCount( let ViewModel):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostLikesCollectionViewCell.identifier, for: indexPath) as! PostLikesCollectionViewCell
             cell.configure(with: ViewModel)
+            cell.delegate = self
             return cell
             
         case .caption( let ViewModel):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostCaptionCollectionViewCell.identifier, for: indexPath) as! PostCaptionCollectionViewCell
             cell.configure(with: ViewModel)
+            cell.delegate = self
             return cell
             
         case .timestamp( let ViewModel):
@@ -197,23 +200,50 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollectionViewCellDelegate {
-    func didTapMoreButton() {
+extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollectionViewCellDelegate,PostCollectionViewCellDelegate,PostLikesCollectionViewCellDelegate, PostCaptionCollectionViewCellDelegate {
+    
+    func PostCaptionCollectionViewCellDidTapCaption(_ cell: PostCaptionCollectionViewCell) {
+        print("caption")
+    }
+    
+    func PostLikesCollectionViewCellDidTapLikeCount(_ cell: PostLikesCollectionViewCell) {
+        // present like people
+        let vc = ListViewController()
+        vc.title = "Liked by"
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func PostCollectionViewCellDidLike(_ cell: PostCollectionViewCell) {
+        print("double tap to like")
+    }
+    
+    func PosterCollectionViewCelldidTapUsernameButton(_ cell: PosterCollectionViewCell) {
+        print("username")
+        
+        let vc = ProfileViewController(user: User(username: "jjchau", email: "jj@jj.com"))
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func PosterCollectionViewCelldidTapMoreButton(_ cell: PosterCollectionViewCell) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Report Post", style: .destructive))
+        actionSheet.addAction(UIAlertAction(title: "Share Post", style: .default))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(actionSheet,animated: true)
     }
     
-    func didTapLikeButton() {
-        print("like")
+    func PostActionCollectionViewCelldidTapLikeButton(_ cell: PostActionCollectionViewCell, isLike: Bool) {
+        //call db to update like state
     }
     
-    func didTapSendButton() {
-        print("send")
+    func PostActionCollectionViewCelldidTapSendButton(_ cell: PostActionCollectionViewCell) {
+        let vc = UIActivityViewController(activityItems: ["Sharing from IG"], applicationActivities: [])
+        present(vc,animated: true)
     }
-    func didTapCommentButton() {
-        print("comment")
+    func PostActionCollectionViewCelldidTapCommentButton(_ cell: PostActionCollectionViewCell) {
+        let vc = PostViewController()
+        vc.title = "Post"
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     

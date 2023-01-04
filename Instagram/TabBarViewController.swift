@@ -39,7 +39,7 @@ class TabBarViewController: UITabBarController {
         // Define tab items
         nav1.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "house"), tag: 1)
         nav2.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "magnifyingglass"), tag: 2)
-        nav3.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "plus"), tag: 3)
+        nav3.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "camera"), tag: 3)
         nav4.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "heart"), tag: 4)
         nav5.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 5)
         
@@ -49,6 +49,13 @@ class TabBarViewController: UITabBarController {
         nav4.navigationBar.tintColor = .label
         nav5.navigationBar.tintColor = .label
         
+        
+        if #available(iOS 14.0, *) {
+            nav3.navigationItem.backButtonDisplayMode = .minimal
+        } else {
+            // Fallback on earlier versions
+            nav3.navigationItem.backButtonTitle = ""
+        }
         
         // set controllers
         self.setViewControllers([nav1,nav2,nav3,nav4,nav5], animated: false)

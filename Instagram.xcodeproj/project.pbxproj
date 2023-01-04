@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		470BD91E2965E09A008B5762 /* PostEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470BD91D2965E09A008B5762 /* PostEditViewController.swift */; };
+		470BD9202965F8F0008B5762 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */; };
 		478AEB8F2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB8E2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift */; };
 		478AEB912964E3AC0005E962 /* PostCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB902964E3AC0005E962 /* PostCollectionViewCellViewModel.swift */; };
 		478AEB932964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB922964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift */; };
@@ -55,6 +57,8 @@
 
 /* Begin PBXFileReference section */
 		2354E9F54FCFFF0C4909BB00 /* Pods-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Instagram.release.xcconfig"; path = "Target Support Files/Pods-Instagram/Pods-Instagram.release.xcconfig"; sourceTree = "<group>"; };
+		470BD91D2965E09A008B5762 /* PostEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditViewController.swift; sourceTree = "<group>"; };
+		470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		478AEB8E2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB902964E3AC0005E962 /* PostCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB922964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 		478AEB8D2964E3270005E962 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -147,8 +152,8 @@
 				47EA7D0F29639E27005CDC4E /* Managers */,
 				47EA7D0E29639E1F005CDC4E /* Models */,
 				47EA7D0B29639E03005CDC4E /* Views */,
-				47EA7D0D29639E19005CDC4E /* ViewModels */,
 				47EA7D0C29639E10005CDC4E /* Controllers */,
+				47EA7D0D29639E19005CDC4E /* ViewModels */,
 				47EA7D0A29639DFB005CDC4E /* Resources */,
 				47EA7D0429639CBE005CDC4E /* Info.plist */,
 			);
@@ -249,6 +254,7 @@
 				47EA7D222963A2A1005CDC4E /* CaptionViewController.swift */,
 				47EA7D242963A2AE005CDC4E /* ListViewController.swift */,
 				47EA7D262963A2BB005CDC4E /* PostViewController.swift */,
+				470BD91D2965E09A008B5762 /* PostEditViewController.swift */,
 			);
 			name = Others;
 			sourceTree = "<group>";
@@ -425,6 +431,7 @@
 				47EA7D192963A20A005CDC4E /* ProfileViewController.swift in Sources */,
 				47EA7D352963A3A9005CDC4E /* DatabaseManager.swift in Sources */,
 				47FD1C1B2964F13000EDE474 /* PostActionCollectionViewCell.swift in Sources */,
+				470BD91E2965E09A008B5762 /* PostEditViewController.swift in Sources */,
 				47EA7D2F2963A371005CDC4E /* Relationship.swift in Sources */,
 				478AEB972964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift in Sources */,
 				47EA7D2D2963A369005CDC4E /* Post.swift in Sources */,
@@ -433,6 +440,7 @@
 				47EA7CF929639CBD005CDC4E /* SceneDelegate.swift in Sources */,
 				47FD1C212964F17100EDE474 /* PostDateTimeCollectionViewCell.swift in Sources */,
 				47EA7D1F2963A27F005CDC4E /* SignInViewController.swift in Sources */,
+				470BD9202965F8F0008B5762 /* PhotoCollectionViewCell.swift in Sources */,
 				47EA7D3B2963A3CF005CDC4E /* HapticsManager.swift in Sources */,
 				47FD1C172964F07200EDE474 /* PosterCollectionViewCell.swift in Sources */,
 				47EA7D252963A2AE005CDC4E /* ListViewController.swift in Sources */,
