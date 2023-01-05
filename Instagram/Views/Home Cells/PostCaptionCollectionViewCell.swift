@@ -48,7 +48,7 @@ class PostCaptionCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         let size = captionLabel.sizeThatFits(contentView.bounds.size)
-        captionLabel.frame = CGRect(x: 20, y: 0, width: size.width-20, height: size.height)
+        captionLabel.frame = CGRect(x: 20, y: 0, width: contentView.width-20, height: size.height)
     }
     
     override func prepareForReuse() {

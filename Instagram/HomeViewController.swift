@@ -21,7 +21,6 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         configureCollectionView()
         fetchPosts()
-        
     }
     
     
@@ -31,17 +30,75 @@ class HomeViewController: UIViewController {
     }
     
     private func fetchPosts(){
-        // mock data
-        let postData:[HomeFeedCellType] = [
-            .poster(ViewModel: PosterCollectionViewCellViewModel(username: "jjchau", profilePictureUrl: URL(string: "https://loremflickr.com/320/240")!)),
-            .post(ViewModel: PostCollectionViewCellViewModel(postUrl: URL(string: "https://loremflickr.com/320/240")!)),
-            .actions(ViewModel: PostActionCollectionViewCellViewModel(isLiked: true)),
-            .likeCount(ViewModel: PostLikesCollectionViewCellViewModel(likers: ["jjchauu","Chan","Cheung"])),
-            .caption(ViewModel: PostCaptionCollectionViewCellViewModel(username: "jjchauuu", caption: "Happy New Year!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!9999")),
-            .timestamp(ViewModel: PostDateTimeCollectionViewCellViewModel(date: Date()))
-        ]
+        guard let username = UserDefaults.standard.string(forKey: "username") else {return}
         
-        viewModels.append(postData)
+        DatabaseManager.shared.posts(for: username) { [weak self] result in
+            DispatchQueue.main.async{
+                switch result{
+                case .success(let posts):
+                    
+                    let group = DispatchGroup()
+                    
+                    posts.forEach { model in
+                        group.enter()
+                        self?.createViewModel(with: model,username: username, completion: { success in
+                            defer {
+                                group.leave()
+                            }
+                            if !success {
+                                print("faile to create VM")
+                            }
+                        })
+                    }
+                    group.notify(queue: .main) {
+                        self?.collectionView?.reloadData()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    private func createViewModel(with post:Post, username:String, completion: @escaping (Bool) -> Void ){
+        
+        let group = DispatchGroup()
+        group.enter()
+        group.enter()
+        var postURL:URL?
+        var profileURL:URL?
+        
+        StorageManager.shared.downloadURL(for: post) { url in
+            defer {
+                group.leave()
+            }
+            postURL = url
+        }
+        
+        StorageManager.shared.profilePictureURL(for: username) { url in
+            defer {
+                group.leave()
+            }
+            profileURL = url
+        }
+        
+        group.notify(queue: .main) {
+            guard let postURL = postURL, let profileURL = profileURL else {
+               fatalError("faile to get url") }
+            
+            let postData:[HomeFeedCellType] = [
+                .poster(ViewModel: PosterCollectionViewCellViewModel(username: username, profilePictureUrl: profileURL)),
+                .post(ViewModel: PostCollectionViewCellViewModel(postUrl: postURL)),
+                .actions(ViewModel: PostActionCollectionViewCellViewModel(isLiked: false)),
+                .likeCount(ViewModel: PostLikesCollectionViewCellViewModel(likers: post.likers)),
+                .caption(ViewModel: PostCaptionCollectionViewCellViewModel(username: username, caption: post.caption)),
+                .timestamp(ViewModel: PostDateTimeCollectionViewCellViewModel(date: DateFormatter.formatter.date(from: post.postedDate) ?? Date()))
+            ]
+            self.viewModels.append(postData)
+            
+            completion(true)
+        }
+        
         
     }
     
@@ -218,8 +275,6 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
     }
     
     func PosterCollectionViewCelldidTapUsernameButton(_ cell: PosterCollectionViewCell) {
-        print("username")
-        
         let vc = ProfileViewController(user: User(username: "jjchau", email: "jj@jj.com"))
         navigationController?.pushViewController(vc, animated: true)
     }

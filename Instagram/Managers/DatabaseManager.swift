@@ -15,6 +15,9 @@ final class DatabaseManager {
     
     let database = Firestore.firestore()
     
+    
+
+    
     public func createUser(newUser: User, completion: @escaping (Bool) -> Void){
         
         let reference = database.document("users/\(newUser.username)")
@@ -60,5 +63,16 @@ final class DatabaseManager {
         }
     }
     
+    public func posts(for username:String, completion: @escaping (Result<[Post], Error>) -> Void){
+        let ref = database.collection("users").document(username).collection("posts")
+        ref.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents, error == nil else {
+                return}
+            let postsData = documents.compactMap{ $0.data() }
+            let posts = postsData.compactMap {Post(with: $0)}
+            
+            completion(.success(posts))
+        }
+    }
     
 }
