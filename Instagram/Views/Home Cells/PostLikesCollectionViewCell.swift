@@ -13,7 +13,7 @@ protocol PostLikesCollectionViewCellDelegate:AnyObject {
 
 class PostLikesCollectionViewCell: UICollectionViewCell {
     
-    var delegate:PostLikesCollectionViewCellDelegate?
+    public weak var delegate:PostLikesCollectionViewCellDelegate?
     
     private let likeLabel:UILabel = {
         let label = UILabel()

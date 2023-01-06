@@ -62,29 +62,9 @@ class HomeViewController: UIViewController {
     
     private func createViewModel(with post:Post, username:String, completion: @escaping (Bool) -> Void ){
         
-        let group = DispatchGroup()
-        group.enter()
-        group.enter()
-        var postURL:URL?
-        var profileURL:URL?
-        
-        StorageManager.shared.downloadURL(for: post) { url in
-            defer {
-                group.leave()
-            }
-            postURL = url
-        }
-        
-        StorageManager.shared.profilePictureURL(for: username) { url in
-            defer {
-                group.leave()
-            }
-            profileURL = url
-        }
-        
-        group.notify(queue: .main) {
-            guard let postURL = postURL, let profileURL = profileURL else {
-               fatalError("faile to get url") }
+        StorageManager.shared.profilePictureURL(for: username) { [weak self] profileURL in
+            guard let postURL = URL(string: post.postUrlString), let profileURL = profileURL else {
+                fatalError("faile to get url") }
             
             let postData:[HomeFeedCellType] = [
                 .poster(ViewModel: PosterCollectionViewCellViewModel(username: username, profilePictureUrl: profileURL)),
@@ -94,8 +74,7 @@ class HomeViewController: UIViewController {
                 .caption(ViewModel: PostCaptionCollectionViewCellViewModel(username: username, caption: post.caption)),
                 .timestamp(ViewModel: PostDateTimeCollectionViewCellViewModel(date: DateFormatter.formatter.date(from: post.postedDate) ?? Date()))
             ]
-            self.viewModels.append(postData)
-            
+            self?.viewModels.append(postData)
             completion(true)
         }
         
@@ -296,9 +275,9 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
         present(vc,animated: true)
     }
     func PostActionCollectionViewCelldidTapCommentButton(_ cell: PostActionCollectionViewCell) {
-        let vc = PostViewController()
-        vc.title = "Post"
-        navigationController?.pushViewController(vc, animated: true)
+//        let vc = PostViewController(post: <#T##Post#>)
+//        vc.title = "Post"
+//        navigationController?.pushViewController(vc, animated: true)
     }
     
     

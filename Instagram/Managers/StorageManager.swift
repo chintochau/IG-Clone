@@ -15,6 +15,20 @@ final class StorageManager {
     
     let storage = Storage.storage().reference()
     
+    
+    public func uploadPost(id:String, data:Data?, completion: @escaping (URL?) -> Void) {
+        guard let data = data,
+              let username = UserDefaults.standard.string(forKey: "username") else {return}
+        let ref = storage.child("\(username)/posts/\(id).png")
+        ref.putData(data) { _, error in
+            ref.downloadURL { url, _ in
+                completion(url)
+            }
+            
+        }
+    }
+    
+    /// get download URL for a post
     public func downloadURL(for post: Post, completion: @escaping (URL?) -> Void){
         guard let ref = post.storageReference else {
             completion(nil)
@@ -31,14 +45,7 @@ final class StorageManager {
         }
     }
     
-    public func uploadPost(id:String, data:Data?, completion: @escaping (Bool) -> Void) {
-        guard let data = data, let username = UserDefaults.standard.string(forKey: "username") else {
-            completion(false)
-            return}
-        storage.child("\(username)/posts/\(id).png").putData(data) { _, error in
-            completion(error == nil)
-        }
-    }
+    
     
     public func uploadProfilePicture(username: String, data:Data?, completion: @escaping (Bool) -> Void) {
         guard let data = data else {

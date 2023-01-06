@@ -15,7 +15,7 @@ protocol PostActionCollectionViewCellDelegate:AnyObject {
 
 class PostActionCollectionViewCell: UICollectionViewCell {
     
-    weak var delegate:PostActionCollectionViewCellDelegate?
+    public weak var delegate:PostActionCollectionViewCellDelegate?
     
     private var isLiked = false
     

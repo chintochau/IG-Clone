@@ -14,7 +14,7 @@ protocol PostCollectionViewCellDelegate:AnyObject {
 
 class PostCollectionViewCell: UICollectionViewCell {
     
-    weak var delegate:PostCollectionViewCellDelegate?
+    public weak var delegate:PostCollectionViewCellDelegate?
     
     private let contentImageView:UIImageView = {
         let imageView = UIImageView()

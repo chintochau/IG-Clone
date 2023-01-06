@@ -53,9 +53,16 @@ class ProfileViewController: UIViewController {
         /// pass in weak self to setting, and to signout page to prevent retain cycle
         vc.completion = { [weak self] in
             DispatchQueue.main.async {
-                let signInVC = SignInViewController()
-                signInVC.modalPresentationStyle = .fullScreen
-                self?.present(signInVC, animated: true)
+//                let signInVC = SignInViewController()
+                
+                
+                let vc = SignInViewController()
+                let navVc = UINavigationController(rootViewController: vc)
+                navVc.modalPresentationStyle = .fullScreen
+                self?.present(navVc, animated: true)
+                
+//                signInVC.modalPresentationStyle = .fullScreen
+//                self?.present(signInVC, animated: true)
             }
         }
         present(UINavigationController(rootViewController: vc),animated: true)

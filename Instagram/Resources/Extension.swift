@@ -30,6 +30,7 @@ extension UIView {
 }
 
 extension Decodable {
+    ///Change Dictionary to a decodable Data type
     init?(with dictionary: [String:Any]) {
         guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted) else {return nil}
         

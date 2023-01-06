@@ -15,8 +15,33 @@ final class DatabaseManager {
     
     let database = Firestore.firestore()
     
+    /// find users, used in explore view
+    public func findUsers(with usernamePrefix: String, completion: @escaping ([User]) -> Void) {
+        
+            let ref = database.collection("users")
+            ref.getDocuments { snapshot, error in
+                guard let users = snapshot?.documents.compactMap({ User(with: $0.data()) }) , error == nil else {
+                    completion([])
+                    return
+                }
+                let subset = users.filter ({
+                    $0.username.lowercased().hasPrefix(usernamePrefix.lowercased())
+                })
+                completion(subset)
+            }
+    }
     
-
+    public func posts(for username:String, completion: @escaping (Result<[Post], Error>) -> Void){
+        let ref = database.collection("users").document(username).collection("posts")
+        ref.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents, error == nil else {
+                return}
+            let postsData = documents.compactMap{ $0.data() }
+            let posts = postsData.compactMap {Post(with: $0)}
+            
+            completion(.success(posts))
+        }
+    }
     
     public func createUser(newUser: User, completion: @escaping (Bool) -> Void){
         
@@ -48,6 +73,7 @@ final class DatabaseManager {
         }
     }
     
+    /// find user with email, used when creating account
     public func findUser(with email: String, completion: @escaping (User?) -> Void){
         let ref = database.collection("users")
         ref.getDocuments { snapshot, error in
@@ -63,16 +89,42 @@ final class DatabaseManager {
         }
     }
     
-    public func posts(for username:String, completion: @escaping (Result<[Post], Error>) -> Void){
-        let ref = database.collection("users").document(username).collection("posts")
+    public func explorePosts(completion: @escaping ([Post]) -> Void) {
+        
+        let ref = database.collection("users")
         ref.getDocuments { snapshot, error in
-            guard let documents = snapshot?.documents, error == nil else {
-                return}
-            let postsData = documents.compactMap{ $0.data() }
-            let posts = postsData.compactMap {Post(with: $0)}
+            guard let users = snapshot?.documents.compactMap({ User(with: $0.data()) }) , error == nil else {
+ 
+                return
+            }
             
-            completion(.success(posts))
+            let group = DispatchGroup()
+            var appregatePosts = [Post]()
+            
+            users.forEach{ user in
+                let username = user.username
+                let postRef = self.database.collection("users/\(username)/posts")
+                group.enter()
+                
+                postRef.getDocuments { snapshot, error in
+                    guard let posts = snapshot?.documents.compactMap({ Post(with: $0.data()) }) , error == nil else {
+                        return
+                    }
+                    defer{
+                        group.leave()
+                    }
+                    
+                    appregatePosts.append(contentsOf:posts)
+                }
+                
+            }
+            
+            group.notify(queue: .main){
+                completion(appregatePosts)
+            }
+            
         }
+        
     }
     
 }

@@ -13,7 +13,7 @@ protocol PostCaptionCollectionViewCellDelegate:AnyObject {
 
 class PostCaptionCollectionViewCell: UICollectionViewCell {
     
-    var delegate:PostCaptionCollectionViewCellDelegate?
+    public weak var delegate:PostCaptionCollectionViewCellDelegate?
     
     private let captionLabel:UILabel = {
         let label = UILabel()
