@@ -236,6 +236,7 @@ extension HomeViewController {
     }
 }
 
+// MARK: - Actions
 extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollectionViewCellDelegate,PostCollectionViewCellDelegate,PostLikesCollectionViewCellDelegate, PostCaptionCollectionViewCellDelegate {
     
     func PostCaptionCollectionViewCellDidTapCaption(_ cell: PostCaptionCollectionViewCell) {
@@ -251,6 +252,22 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
     
     func PostCollectionViewCellDidLike(_ cell: PostCollectionViewCell) {
         print("double tap to like")
+        
+        
+        // add dummy noti for current user
+        let username = UserDefaults.standard.string(forKey: "username")
+        let id = NotificationManager.newIdentifier()
+        print("Identifier!!!!!!!!" + id)
+        let model = IGNotification(identifier: id,
+                                   notificationType: 3,
+                                   profilePictureUrlString: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg",
+                                   username: "ElonMusk11",
+                                   dateString: String.date(from: Date()) ?? "Now",
+                                   isFollowing: nil, postId: "123",
+                                   PostUrl: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg")
+        NotificationManager.shared.create(notification: model, for: username ?? "jjchau")
+        
+        
     }
     
     func PosterCollectionViewCelldidTapUsernameButton(_ cell: PosterCollectionViewCell) {

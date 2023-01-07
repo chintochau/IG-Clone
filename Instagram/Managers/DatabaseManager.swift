@@ -15,7 +15,7 @@ final class DatabaseManager {
     
     let database = Firestore.firestore()
     
-    /// find users, used in explore view
+    /// find users with search query(usernamePrefix), used in explore view
     public func findUsers(with usernamePrefix: String, completion: @escaping ([User]) -> Void) {
         
             let ref = database.collection("users")
@@ -31,6 +31,7 @@ final class DatabaseManager {
             }
     }
     
+    /// find post with username
     public func posts(for username:String, completion: @escaping (Result<[Post], Error>) -> Void){
         let ref = database.collection("users").document(username).collection("posts")
         ref.getDocuments { snapshot, error in
@@ -89,6 +90,22 @@ final class DatabaseManager {
         }
     }
     
+    /// find user with uername
+    public func findUser(username: String, completion: @escaping (User?) -> Void){
+        let ref = database.collection("users")
+        ref.getDocuments { snapshot, error in
+            guard let users = snapshot?.documents, error == nil else {
+                completion(nil)
+                return
+            }
+            let userData = users.compactMap { $0.data() }
+            let myUsers = userData.compactMap({User(with: $0)})
+            
+            let user = myUsers.first(where: {$0.username == username})
+            completion(user)
+        }
+    }
+    
     public func explorePosts(completion: @escaping ([Post]) -> Void) {
         
         let ref = database.collection("users")
@@ -127,4 +144,74 @@ final class DatabaseManager {
         
     }
     
+    
+    public func getNotifications(completion: @escaping ([IGNotification]) -> Void){
+        guard let username = UserDefaults.standard.string(forKey: "username") else {
+            completion([])
+            return}
+        let ref = database.collection("users").document(username).collection("notifications")
+        ref.getDocuments { snapshot, error in
+            guard let notifications = snapshot?.documents.compactMap({ IGNotification(with: $0.data()) }) , error == nil else {
+                completion([])
+                 return
+            }
+            
+            completion(notifications)
+            
+        }
+    }
+    
+    
+    public func insertNotification(identifier: String, data: [String : Any], for username: String){
+        let ref = database.collection("users").document(username).collection("notifications").document(identifier)
+        ref.setData(data)
+        
+    }
+    
+    public func getPost(with identifier:String, from username:String, completion: @escaping (Post?) -> Void) {
+        let ref = database.collection("users").document(username).collection("posts").document(identifier)
+
+        ref.getDocument { snapshot, error in
+            guard let data = snapshot?.data(), let post = Post(with: data),error == nil else {
+                completion(nil)
+                return}
+            completion(post)
+        }
+    }
+    
+    enum RelationshipState {
+        case follow
+        case unfollow
+    }
+    
+    public func updateRelationship(state: RelationshipState, for targetUsername:String, completion: @escaping (Bool) -> Void){
+        
+        guard let currentUsername = UserDefaults.standard.string(forKey: "username") else {
+            completion(false)
+            return
+        }
+        
+        let currentFollowers = database.collection("users").document(currentUsername).collection("followers")
+        let currentFollowing = database.collection("users").document(currentUsername).collection("following")
+        
+        let targetUserFollowers = database.collection("users").document(targetUsername).collection("followers")
+        let targetUserFollowing = database.collection("users").document(targetUsername).collection("following")
+        
+        switch state {
+        case .follow:
+            //add for sender and receiver
+            currentFollowing.document(targetUsername).setData(["valid":true])
+            targetUserFollowers.document(currentUsername).setData(["valid":true])
+            print("follow")
+            completion(true)
+        case .unfollow:
+            // remove for sender and receiver
+            currentFollowing.document(targetUsername).delete()
+            targetUserFollowers.document(currentUsername).delete()
+            print("unfollow")
+            completion(true)
+            
+        }
+        
+    }
 }

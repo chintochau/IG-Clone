@@ -17,6 +17,12 @@
 		478AEB972964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB962964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift */; };
 		478AEB992964E48A0005E962 /* PostDateTimeCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB982964E48A0005E962 /* PostDateTimeCollectionViewCellViewModel.swift */; };
 		478AEB9B2964E5DC0005E962 /* HomeFeedCelltype.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB9A2964E5DC0005E962 /* HomeFeedCelltype.swift */; };
+		47D0E45B29687B3D001A0551 /* FollowNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E45A29687B3C001A0551 /* FollowNotificationTableViewCell.swift */; };
+		47D0E45D29687B58001A0551 /* CommentNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E45C29687B58001A0551 /* CommentNotificationTableViewCell.swift */; };
+		47D0E45F29687BE2001A0551 /* LikeNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E45E29687BE2001A0551 /* LikeNotificationTableViewCell.swift */; };
+		47D0E46129687DAE001A0551 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E46029687DAE001A0551 /* NotificationManager.swift */; };
+		47D0E46329687FC1001A0551 /* NotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E46229687FC1001A0551 /* NotificationCellType.swift */; };
+		47D0E46529688016001A0551 /* NotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E46429688016001A0551 /* NotificationCellViewModel.swift */; };
 		47EA7CF729639CBD005CDC4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CF629639CBD005CDC4E /* AppDelegate.swift */; };
 		47EA7CF929639CBD005CDC4E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */; };
 		47EA7CFB29639CBD005CDC4E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CFA29639CBD005CDC4E /* HomeViewController.swift */; };
@@ -37,7 +43,7 @@
 		47EA7D2B2963A364005CDC4E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D2A2963A364005CDC4E /* User.swift */; };
 		47EA7D2D2963A369005CDC4E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D2C2963A369005CDC4E /* Post.swift */; };
 		47EA7D2F2963A371005CDC4E /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D2E2963A371005CDC4E /* Relationship.swift */; };
-		47EA7D312963A379005CDC4E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D302963A379005CDC4E /* Notification.swift */; };
+		47EA7D312963A379005CDC4E /* IGNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D302963A379005CDC4E /* IGNotification.swift */; };
 		47EA7D332963A39F005CDC4E /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D322963A39F005CDC4E /* AuthManager.swift */; };
 		47EA7D352963A3A9005CDC4E /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D342963A3A9005CDC4E /* DatabaseManager.swift */; };
 		47EA7D372963A3AF005CDC4E /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7D362963A3AF005CDC4E /* StorageManager.swift */; };
@@ -68,6 +74,12 @@
 		478AEB962964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCaptionCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB982964E48A0005E962 /* PostDateTimeCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDateTimeCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB9A2964E5DC0005E962 /* HomeFeedCelltype.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCelltype.swift; sourceTree = "<group>"; };
+		47D0E45A29687B3C001A0551 /* FollowNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowNotificationTableViewCell.swift; sourceTree = "<group>"; };
+		47D0E45C29687B58001A0551 /* CommentNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentNotificationTableViewCell.swift; sourceTree = "<group>"; };
+		47D0E45E29687BE2001A0551 /* LikeNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeNotificationTableViewCell.swift; sourceTree = "<group>"; };
+		47D0E46029687DAE001A0551 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		47D0E46229687FC1001A0551 /* NotificationCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCellType.swift; sourceTree = "<group>"; };
+		47D0E46429688016001A0551 /* NotificationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCellViewModel.swift; sourceTree = "<group>"; };
 		47EA7CF329639CBD005CDC4E /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47EA7CF629639CBD005CDC4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,7 +102,7 @@
 		47EA7D2A2963A364005CDC4E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		47EA7D2C2963A369005CDC4E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		47EA7D2E2963A371005CDC4E /* Relationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
-		47EA7D302963A379005CDC4E /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		47EA7D302963A379005CDC4E /* IGNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGNotification.swift; sourceTree = "<group>"; };
 		47EA7D322963A39F005CDC4E /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		47EA7D342963A3A9005CDC4E /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		47EA7D362963A3AF005CDC4E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -125,9 +137,21 @@
 		478AEB8D2964E3270005E962 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				47FD1C152964F05800EDE474 /* Home Cells */,
 				470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */,
+				47D0E466296911C3001A0551 /* Notification Cells */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		47D0E466296911C3001A0551 /* Notification Cells */ = {
+			isa = PBXGroup;
+			children = (
+				47D0E45A29687B3C001A0551 /* FollowNotificationTableViewCell.swift */,
+				47D0E45C29687B58001A0551 /* CommentNotificationTableViewCell.swift */,
+				47D0E45E29687BE2001A0551 /* LikeNotificationTableViewCell.swift */,
+			);
+			path = "Notification Cells";
 			sourceTree = "<group>";
 		};
 		47EA7CEA29639CBD005CDC4E = {
@@ -152,10 +176,10 @@
 			isa = PBXGroup;
 			children = (
 				47EA7D0F29639E27005CDC4E /* Managers */,
+				47EA7D0D29639E19005CDC4E /* ViewModels */,
 				47EA7D0E29639E1F005CDC4E /* Models */,
 				47EA7D0B29639E03005CDC4E /* Views */,
 				47EA7D0C29639E10005CDC4E /* Controllers */,
-				47EA7D0D29639E19005CDC4E /* ViewModels */,
 				47EA7D0A29639DFB005CDC4E /* Resources */,
 				47EA7D0429639CBE005CDC4E /* Info.plist */,
 			);
@@ -177,7 +201,6 @@
 		47EA7D0B29639E03005CDC4E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				47FD1C152964F05800EDE474 /* Home Cells */,
 				478AEB8D2964E3270005E962 /* Cells */,
 				47EA7D3E2963BE17005CDC4E /* SignInHeaderView.swift */,
 				47EA7D0129639CBE005CDC4E /* LaunchScreen.storyboard */,
@@ -205,6 +228,7 @@
 				478AEB942964E41B0005E962 /* PostLikesCollectionViewCellViewModel.swift */,
 				478AEB962964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift */,
 				478AEB982964E48A0005E962 /* PostDateTimeCollectionViewCellViewModel.swift */,
+				47D0E46429688016001A0551 /* NotificationCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -215,8 +239,9 @@
 				47EA7D2A2963A364005CDC4E /* User.swift */,
 				47EA7D2C2963A369005CDC4E /* Post.swift */,
 				47EA7D2E2963A371005CDC4E /* Relationship.swift */,
-				47EA7D302963A379005CDC4E /* Notification.swift */,
+				47EA7D302963A379005CDC4E /* IGNotification.swift */,
 				478AEB9A2964E5DC0005E962 /* HomeFeedCelltype.swift */,
+				47D0E46229687FC1001A0551 /* NotificationCellType.swift */,
 			);
 			name = Models;
 			path = "New Group1";
@@ -230,6 +255,7 @@
 				47EA7D362963A3AF005CDC4E /* StorageManager.swift */,
 				47EA7D382963A3BD005CDC4E /* AnalyticsManager.swift */,
 				47EA7D3A2963A3CF005CDC4E /* HapticsManager.swift */,
+				47D0E46029687DAE001A0551 /* NotificationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -411,14 +437,16 @@
 				47EA7D212963A284005CDC4E /* SignUpViewController.swift in Sources */,
 				47FD1C1D2964F14400EDE474 /* PostLikesCollectionViewCell.swift in Sources */,
 				47EA7D152963A1F5005CDC4E /* NotificationViewController.swift in Sources */,
-				47EA7D312963A379005CDC4E /* Notification.swift in Sources */,
+				47EA7D312963A379005CDC4E /* IGNotification.swift in Sources */,
 				47EA7D372963A3AF005CDC4E /* StorageManager.swift in Sources */,
 				478AEB992964E48A0005E962 /* PostDateTimeCollectionViewCellViewModel.swift in Sources */,
+				47D0E46329687FC1001A0551 /* NotificationCellType.swift in Sources */,
 				47FD1C192964F10C00EDE474 /* PostCollectionViewCell.swift in Sources */,
 				47EA7D272963A2BB005CDC4E /* PostViewController.swift in Sources */,
 				47EA7D3F2963BE17005CDC4E /* SignInHeaderView.swift in Sources */,
 				47EA7D132963A1E8005CDC4E /* ExploreViewController.swift in Sources */,
 				478AEB8F2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift in Sources */,
+				47D0E45D29687B58001A0551 /* CommentNotificationTableViewCell.swift in Sources */,
 				47EA7CFB29639CBD005CDC4E /* HomeViewController.swift in Sources */,
 				478AEB9B2964E5DC0005E962 /* HomeFeedCelltype.swift in Sources */,
 				47EA7D1B2963A222005CDC4E /* SettingViewController.swift in Sources */,
@@ -429,18 +457,22 @@
 				47EA7D2B2963A364005CDC4E /* User.swift in Sources */,
 				47EA7D232963A2A1005CDC4E /* CaptionViewController.swift in Sources */,
 				478AEB912964E3AC0005E962 /* PostCollectionViewCellViewModel.swift in Sources */,
+				47D0E46129687DAE001A0551 /* NotificationManager.swift in Sources */,
 				47EA7D432963C6CE005CDC4E /* IGTextField.swift in Sources */,
 				470BD922296686B0008B5762 /* SearchResultViewController.swift in Sources */,
 				478AEB952964E41B0005E962 /* PostLikesCollectionViewCellViewModel.swift in Sources */,
 				47EA7D192963A20A005CDC4E /* ProfileViewController.swift in Sources */,
 				47EA7D352963A3A9005CDC4E /* DatabaseManager.swift in Sources */,
+				47D0E46529688016001A0551 /* NotificationCellViewModel.swift in Sources */,
 				47FD1C1B2964F13000EDE474 /* PostActionCollectionViewCell.swift in Sources */,
 				470BD91E2965E09A008B5762 /* PostEditViewController.swift in Sources */,
 				47EA7D2F2963A371005CDC4E /* Relationship.swift in Sources */,
 				478AEB972964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift in Sources */,
 				47EA7D2D2963A369005CDC4E /* Post.swift in Sources */,
+				47D0E45F29687BE2001A0551 /* LikeNotificationTableViewCell.swift in Sources */,
 				478AEB932964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift in Sources */,
 				47EA7D332963A39F005CDC4E /* AuthManager.swift in Sources */,
+				47D0E45B29687B3D001A0551 /* FollowNotificationTableViewCell.swift in Sources */,
 				47EA7CF929639CBD005CDC4E /* SceneDelegate.swift in Sources */,
 				47FD1C212964F17100EDE474 /* PostDateTimeCollectionViewCell.swift in Sources */,
 				47EA7D1F2963A27F005CDC4E /* SignInViewController.swift in Sources */,
