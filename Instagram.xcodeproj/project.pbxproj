@@ -30,6 +30,8 @@
 		47D0E470296A3FBB001A0551 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E46F296A3FBB001A0551 /* UserInfo.swift */; };
 		47D0E472296A5A68001A0551 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E471296A5A68001A0551 /* EditProfileViewController.swift */; };
 		47D0E476296A9BFA001A0551 /* IGFollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E475296A9BFA001A0551 /* IGFollowButton.swift */; };
+		47D0E478296B304F001A0551 /* ListUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E477296B304F001A0551 /* ListUserTableViewCell.swift */; };
+		47D0E47A296B33C7001A0551 /* ListUserTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E479296B33C7001A0551 /* ListUserTableViewCellViewModel.swift */; };
 		47EA7CF729639CBD005CDC4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CF629639CBD005CDC4E /* AppDelegate.swift */; };
 		47EA7CF929639CBD005CDC4E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */; };
 		47EA7CFB29639CBD005CDC4E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CFA29639CBD005CDC4E /* HomeViewController.swift */; };
@@ -94,6 +96,8 @@
 		47D0E46F296A3FBB001A0551 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		47D0E471296A5A68001A0551 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		47D0E475296A9BFA001A0551 /* IGFollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFollowButton.swift; sourceTree = "<group>"; };
+		47D0E477296B304F001A0551 /* ListUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUserTableViewCell.swift; sourceTree = "<group>"; };
+		47D0E479296B33C7001A0551 /* ListUserTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUserTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		47EA7CF329639CBD005CDC4E /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47EA7CF629639CBD005CDC4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 				47FD1C152964F05800EDE474 /* Home Cells */,
 				470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */,
 				47D0E466296911C3001A0551 /* Notification Cells */,
+				47D0E477296B304F001A0551 /* ListUserTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -249,6 +254,7 @@
 				47D0E46429688016001A0551 /* NotificationCellViewModel.swift */,
 				47D0E4692969DCA1001A0551 /* ProfileHeaderViewModel.swift */,
 				47D0E46D2969F424001A0551 /* ProfileHeaderCountViewModel.swift */,
+				47D0E479296B33C7001A0551 /* ListUserTableViewCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -478,6 +484,7 @@
 				47EA7D392963A3BD005CDC4E /* AnalyticsManager.swift in Sources */,
 				47EA7D412963BFBC005CDC4E /* Extension.swift in Sources */,
 				47EA7D1D2963A241005CDC4E /* TabBarViewController.swift in Sources */,
+				47D0E47A296B33C7001A0551 /* ListUserTableViewCellViewModel.swift in Sources */,
 				47EA7CF729639CBD005CDC4E /* AppDelegate.swift in Sources */,
 				47EA7D2B2963A364005CDC4E /* User.swift in Sources */,
 				47EA7D232963A2A1005CDC4E /* CaptionViewController.swift in Sources */,
@@ -491,6 +498,7 @@
 				47EA7D352963A3A9005CDC4E /* DatabaseManager.swift in Sources */,
 				47D0E46529688016001A0551 /* NotificationCellViewModel.swift in Sources */,
 				47FD1C1B2964F13000EDE474 /* PostActionCollectionViewCell.swift in Sources */,
+				47D0E478296B304F001A0551 /* ListUserTableViewCell.swift in Sources */,
 				470BD91E2965E09A008B5762 /* PostEditViewController.swift in Sources */,
 				47EA7D2F2963A371005CDC4E /* Relationship.swift in Sources */,
 				478AEB972964E4670005E962 /* PostCaptionCollectionViewCellViewModel.swift in Sources */,

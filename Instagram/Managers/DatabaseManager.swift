@@ -37,8 +37,11 @@ final class DatabaseManager {
         ref.getDocuments { snapshot, error in
             guard let documents = snapshot?.documents, error == nil else {
                 return}
+            
             let postsData = documents.compactMap{ $0.data() }
-            let posts = postsData.compactMap {Post(with: $0)}
+            let posts = postsData.compactMap {Post(with: $0)}.sorted { first, second in
+                first.date > second.date
+            }
             
             completion(.success(posts))
         }
@@ -247,6 +250,7 @@ final class DatabaseManager {
             
         }
     
+    /// return isFollowing: Bool
     public func isFollowing(targetUsername:String, completion: @escaping (Bool) -> Void) {
         guard let currentUsername = UserDefaults.standard.string(forKey: "username") else {
             completion(false)
@@ -256,6 +260,27 @@ final class DatabaseManager {
         userRef.getDocument { snapshot, error in
             completion(snapshot?.data() != nil)
         }
+    }
+    
+    public func followers(for username:String, completion: @escaping ([String]) -> Void) {
+        let ref = database.collection("users").document(username).collection("followers")
+        ref.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents, error == nil  else {return}
+            var follower:[String] = []
+            documents.forEach({ follower.append($0.documentID)})
+            completion(follower)
+        }
+        
+    }
+    public func following(for username:String, completion: @escaping ([String]) -> Void) {
+        let ref = database.collection("users").document(username).collection("following")
+        ref.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents, error == nil  else {return}
+            var followings:[String] = []
+            documents.forEach({ followings.append($0.documentID)})
+            completion(followings)
+        }
+        
     }
     
     

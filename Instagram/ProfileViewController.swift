@@ -301,14 +301,14 @@ extension ProfileViewController:ProfileHeaderCountViewDelegate, ProfileHeaderCol
     }
     
     func ProfileHeaderCountViewDidTapFollowersButton(_ view: ProfileHeaderCountView) {
-        let vc = ListViewController()
+        let vc = ListViewController(type: .folowers(user: user))
         vc.title = "Followers"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func ProfileHeaderCountViewDidTapFollowingButton(_ view: ProfileHeaderCountView) {
-        let vc = ListViewController()
+        let vc = ListViewController(type: .following(user: user))
         vc.title = "Following"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

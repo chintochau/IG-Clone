@@ -84,11 +84,13 @@ class NotificationViewController: UIViewController,UITableViewDelegate,UITableVi
                 
                 
             case .follow:
+                
                 viewModels.append(.follow(viewModel: FollowNotificationCellViewModel(
                     username: username,
                     profilePictureUrl: profilePictureUrl,
-                    isCurrentUserFollowing: notification.isFollowing ?? false,
+                    isCurrentUserFollowing: false,
                     dateString: date)))
+                
                 
                 
             case .comment:
@@ -211,6 +213,7 @@ extension NotificationViewController:FollowNotificationTableViewCellDelegate,Com
     }
     
     func FollowNotificationTableViewCellDidTapFollowButton(_ cell: FollowNotificationTableViewCell, didTapButton isFollowing: Bool, with viewModel: FollowNotificationCellViewModel) {
+        
         let username = viewModel.username
         DatabaseManager.shared.updateRelationship(state: isFollowing ? .follow : .unfollow, for: username) { [weak self] success in
             print(success)

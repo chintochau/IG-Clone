@@ -48,14 +48,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         return label
     }()
     
-    private let followEditButton:UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .secondarySystemBackground
-        button.layer.cornerRadius = 8
-        button.setTitleColor(.label, for: .normal)
-        button.setTitle("Follow", for: .normal)
-        return button
-    }()
+    private let followEditButton = IGFollowButton()
     
     public let countContainerView = ProfileHeaderCountView()
 
@@ -124,7 +117,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
                 delegate?.ProfileHeaderCollectionReusableViewDidTapFollow(self)
             }
             self.isFollowing = !isFollowing
-            updateFollowBUtton()
+            followEditButton.configure(for: self.isFollowing ? .unfollow : .follow)
             
         case .edit:
             delegate?.ProfileHeaderCollectionReusableViewDidTapEditProfile(self)
@@ -136,12 +129,6 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
             delegate?.ProfileHeaderCollectionReusableViewDidTapProfileImage(self)
     }
     
-    private func updateFollowBUtton(){
-        print("status now:\(self.isFollowing)")
-        self.followEditButton.setTitle(self.isFollowing ? "Following" : "Follow", for: .normal)
-        self.followEditButton.setTitleColor(self.isFollowing ? UIColor.label : UIColor.white, for: .normal)
-        self.followEditButton.backgroundColor = self.isFollowing ? .tertiarySystemBackground : .systemBlue
-    }
     // MARK: - Configure headerView
     public func configure(with viewModel:ProfileHeaderViewModel) {
         //container
@@ -158,7 +145,8 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         switch viewModel.buttonType {
         case .follow(let isFollowing):
             self.isFollowing = isFollowing
-            updateFollowBUtton()
+            followEditButton.configure(for: self.isFollowing ? .unfollow: .follow)
+            
         case .edit:
             self.followEditButton.setTitle("Edit Profile", for: .normal)
             self.followEditButton.backgroundColor = .tertiarySystemBackground

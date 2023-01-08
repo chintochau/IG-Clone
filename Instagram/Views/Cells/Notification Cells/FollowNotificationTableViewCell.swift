@@ -48,14 +48,7 @@ class FollowNotificationTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let followButton:UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 4
-        button.layer.masksToBounds = true
-        button.tintColor = .link
-        
-        return button
-    }()
+    private let followButton = IGFollowButton()
     
     
 // MARK: - Init
@@ -70,25 +63,6 @@ class FollowNotificationTableViewCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    @objc private func didTapFollowButton(){
-        guard let viewModel = viewModel else {return}
-        delegate?.FollowNotificationTableViewCellDidTapFollowButton(self, didTapButton: !isFollowing, with: viewModel)
-        isFollowing = !isFollowing
-        updateButton()
-        
-    }
-    
-    private func updateButton(){
-        
-        followButton.setTitle(isFollowing ? "Following" : "Follow", for: .normal)
-        followButton.backgroundColor = isFollowing ? .tertiarySystemBackground : .systemBlue
-        followButton.setTitleColor(isFollowing ? .label : .white, for: .normal)
-        if isFollowing {
-            followButton.layer.borderWidth = 1
-            followButton.layer.borderColor = UIColor.secondaryLabel.cgColor
-        }
-        
-    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -122,7 +96,7 @@ class FollowNotificationTableViewCell: UITableViewCell {
         label.text = nil
         profilePicture.image = nil
         dateLabel.text = nil
-        
+        followButton.setTitle(nil, for: .normal)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -131,14 +105,20 @@ class FollowNotificationTableViewCell: UITableViewCell {
 
     func configure(with viewModel:FollowNotificationCellViewModel) {
         self.viewModel = viewModel
-        
         profilePicture.sd_setImage(with: viewModel.profilePictureUrl)
-        
         label.text = viewModel.username + " started following you."
-        
-        updateButton()
-        
         dateLabel.text = viewModel.dateString
+
+        followButton.configure(for: viewModel.isCurrentUserFollowing ? .unfollow: .follow)
     }
 
+    
+    @objc private func didTapFollowButton(){
+        guard let viewModel = viewModel else {return}
+        delegate?.FollowNotificationTableViewCellDidTapFollowButton(self, didTapButton: !isFollowing, with: viewModel)
+        isFollowing = !isFollowing
+        followButton.configure(for: isFollowing ? .unfollow: .follow)
+        
+    }
+    
 }

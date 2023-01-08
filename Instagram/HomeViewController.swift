@@ -24,6 +24,8 @@ class HomeViewController: UIViewController {
         return indicator
     }()
     
+    // MARK: - LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Instagram"
@@ -41,37 +43,79 @@ class HomeViewController: UIViewController {
         collectionView?.frame = view.safeAreaLayoutGuide.layoutFrame
     }
     
+    // MARK: - Fetch Posts
     private func fetchPosts(){
         guard let username = UserDefaults.standard.string(forKey: "username") else {return}
         
-        DatabaseManager.shared.posts(for: username) { [weak self] result in
-            DispatchQueue.main.async{
-                switch result{
-                case .success(let posts):
+        let userGroup = DispatchGroup()
+        var e = 0
+        var l = 0
+        var se = 0
+        var sl = 0
+        
+        e += 1
+        userGroup.enter()
+        print("ENTER\(e)")
+        DatabaseManager.shared.following(for: username) { usernames in
+            
+            defer {userGroup.leave()}
+            l += 1
+            print("LEAVE\(l)")
+            
+            let users = usernames + [username]
+            for current in users {
+                
+                
+                e += 1
+                userGroup.enter()
+                print("ENTER\(e)")
+                
+                // loop for each user
+                DatabaseManager.shared.posts(for: current) { [weak self] result in
                     
-                    let group = DispatchGroup()
-                    
-                    posts.forEach { model in
-                        group.enter()
-                        self?.createViewModel(with: model,username: username, completion: { success in
-                            defer {
-                                group.leave()
+                    DispatchQueue.main.async{
+                        switch result{
+                        case .success(let posts):
+                            
+                            
+                            let group = DispatchGroup()
+                            
+                            posts.forEach { model in
+                                group.enter()
+                                se+=1
+                                print("enter\(se) - \(model.postedDate)")
+                                
+                                self?.createViewModel(with: model,username: current, completion: { success in
+                                    defer {group.leave()}
+                                    sl+=1
+                                    print("leave\(sl)")
+                                    
+                                    if !success {print("faile to create VM")}
+                                })
                             }
-                            if !success {
-                                print("faile to create VM")
+                            
+                            group.notify(queue: .main) {
+                                defer {userGroup.leave()}
+                                l += 1
+                                print("LEAVE\(l)")
                             }
-                        })
+                            
+                        case .failure(let error): print(error)
+                        }
                     }
-                    group.notify(queue: .main) {
-                        
-                        self?.collectionView?.reloadData()
-                        self?.activityIndicator.stopAnimating()
-                    }
-                case .failure(let error):
-                    print(error)
                 }
+                
+                // end loop for each user
+                
             }
         }
+        
+        userGroup.notify(queue: .main) {
+            print("DONE")
+            self.collectionView?.reloadData()
+            self.activityIndicator.stopAnimating()
+        }
+        
         
     }
     
@@ -158,7 +202,7 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
 }
 
 extension HomeViewController {
-    // MARK: - Create and configure CollectionView
+    // MARK: - CollectionView
     private func configureCollectionView(){
         let sectionHeight:CGFloat = 300+view.width
         
@@ -260,7 +304,7 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
     
     func PostLikesCollectionViewCellDidTapLikeCount(_ cell: PostLikesCollectionViewCell) {
         // present like people
-        let vc = ListViewController()
+        let vc = ListViewController(type: .likers(username: []))
         vc.title = "Liked by"
         navigationController?.pushViewController(vc, animated: true)
     }
