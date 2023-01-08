@@ -29,6 +29,7 @@
 		47D0E46E2969F424001A0551 /* ProfileHeaderCountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E46D2969F424001A0551 /* ProfileHeaderCountViewModel.swift */; };
 		47D0E470296A3FBB001A0551 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E46F296A3FBB001A0551 /* UserInfo.swift */; };
 		47D0E472296A5A68001A0551 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E471296A5A68001A0551 /* EditProfileViewController.swift */; };
+		47D0E476296A9BFA001A0551 /* IGFollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D0E475296A9BFA001A0551 /* IGFollowButton.swift */; };
 		47EA7CF729639CBD005CDC4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CF629639CBD005CDC4E /* AppDelegate.swift */; };
 		47EA7CF929639CBD005CDC4E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */; };
 		47EA7CFB29639CBD005CDC4E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EA7CFA29639CBD005CDC4E /* HomeViewController.swift */; };
@@ -92,6 +93,7 @@
 		47D0E46D2969F424001A0551 /* ProfileHeaderCountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCountViewModel.swift; sourceTree = "<group>"; };
 		47D0E46F296A3FBB001A0551 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		47D0E471296A5A68001A0551 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		47D0E475296A9BFA001A0551 /* IGFollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFollowButton.swift; sourceTree = "<group>"; };
 		47EA7CF329639CBD005CDC4E /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47EA7CF629639CBD005CDC4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47EA7CF829639CBD005CDC4E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				47EA7D422963C6CE005CDC4E /* IGTextField.swift */,
 				47D0E4672969DAF0001A0551 /* ProfileHeaderCollectionReusableView.swift */,
 				47D0E46B2969E7EE001A0551 /* ProfileHeaderCountView.swift */,
+				47D0E475296A9BFA001A0551 /* IGFollowButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 				47D0E4682969DAF0001A0551 /* ProfileHeaderCollectionReusableView.swift in Sources */,
 				47EA7D312963A379005CDC4E /* IGNotification.swift in Sources */,
 				47EA7D372963A3AF005CDC4E /* StorageManager.swift in Sources */,
+				47D0E476296A9BFA001A0551 /* IGFollowButton.swift in Sources */,
 				478AEB992964E48A0005E962 /* PostDateTimeCollectionViewCellViewModel.swift in Sources */,
 				47D0E46329687FC1001A0551 /* NotificationCellType.swift in Sources */,
 				47D0E46E2969F424001A0551 /* ProfileHeaderCountViewModel.swift in Sources */,

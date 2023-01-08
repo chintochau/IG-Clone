@@ -11,6 +11,8 @@ protocol ProfileHeaderCollectionReusableViewDelegate:AnyObject {
     func ProfileHeaderCollectionReusableViewDidTapEditProfile(_ view:ProfileHeaderCollectionReusableView)
     func ProfileHeaderCollectionReusableViewDidTapFollow(_ view:ProfileHeaderCollectionReusableView)
     func ProfileHeaderCollectionReusableViewDidTapUnfollow(_ view:ProfileHeaderCollectionReusableView)
+    func ProfileHeaderCollectionReusableViewDidTapProfileImage(_ view:ProfileHeaderCollectionReusableView)
+    
 }
 
 class ProfileHeaderCollectionReusableView: UICollectionReusableView {
@@ -19,12 +21,15 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     
     weak var delegate: ProfileHeaderCollectionReusableViewDelegate?
     
+    private var isFollowing:Bool = false
+    
     private var vm:ProfileHeaderViewModel?
     
-    private let imageView: UIImageView = {
+    public let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
         imageView.backgroundColor = .secondarySystemBackground
         return imageView
     }()
@@ -55,6 +60,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     public let countContainerView = ProfileHeaderCountView()
 
  
+    // MARK: - Life Cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
@@ -64,6 +70,10 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         addSubview(bioLabel)
         addSubview(followEditButton)
         addAction()
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
+        gesture.numberOfTapsRequired = 1
+        imageView.addGestureRecognizer(gesture)
     }
     
     
@@ -79,7 +89,6 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         
         
         /// Layout does not update when data fetched, change from lifecycle layoutsubviews to end of configure
-        
 //        nameLabel.sizeToFit()
 //        nameLabel.frame = CGRect(x: 5, y: imageView.bottom+5, width: width-10, height: nameLabel.height)
 //        bioLabel.frame = CGRect(x: 5, y: nameLabel.bottom+5, width: width-10, height: height-imageView.height-nameLabel.height-10)
@@ -96,8 +105,45 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         nameLabel.text = nil
     }
     
-    public func configure(with viewModel:ProfileHeaderViewModel) {
+    
+    private func addAction(){
+        followEditButton.addTarget(self, action: #selector(didTapFollowEditButton), for: .touchUpInside)
         
+    }
+    
+    @objc private func didTapFollowEditButton(){
+        guard let buttonType = vm?.buttonType else {return}
+        
+        switch buttonType {
+        case .follow:
+            if self.isFollowing {
+                // unfollow
+                delegate?.ProfileHeaderCollectionReusableViewDidTapUnfollow(self)
+            }else {
+                // follow
+                delegate?.ProfileHeaderCollectionReusableViewDidTapFollow(self)
+            }
+            self.isFollowing = !isFollowing
+            updateFollowBUtton()
+            
+        case .edit:
+            delegate?.ProfileHeaderCollectionReusableViewDidTapEditProfile(self)
+        }
+        
+    }
+    
+    @objc func didTapProfileImage(){
+            delegate?.ProfileHeaderCollectionReusableViewDidTapProfileImage(self)
+    }
+    
+    private func updateFollowBUtton(){
+        print("status now:\(self.isFollowing)")
+        self.followEditButton.setTitle(self.isFollowing ? "Following" : "Follow", for: .normal)
+        self.followEditButton.setTitleColor(self.isFollowing ? UIColor.label : UIColor.white, for: .normal)
+        self.followEditButton.backgroundColor = self.isFollowing ? .tertiarySystemBackground : .systemBlue
+    }
+    // MARK: - Configure headerView
+    public func configure(with viewModel:ProfileHeaderViewModel) {
         //container
         let containerViewModel = ProfileHeaderCountViewModel(
             followerCount: viewModel.followerCount,
@@ -110,10 +156,9 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         nameLabel.text = viewModel.username
         bioLabel.text = viewModel.bio ?? ""
         switch viewModel.buttonType {
-        case .follow(let following):
-            self.followEditButton.setTitle(following ? "Following" : "Follow", for: .normal)
-            self.followEditButton.setTitleColor(following ? UIColor.label : UIColor.white, for: .normal)
-            self.followEditButton.backgroundColor = following ? .tertiarySystemBackground : .systemBlue
+        case .follow(let isFollowing):
+            self.isFollowing = isFollowing
+            updateFollowBUtton()
         case .edit:
             self.followEditButton.setTitle("Edit Profile", for: .normal)
             self.followEditButton.backgroundColor = .tertiarySystemBackground
@@ -123,34 +168,29 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         self.vm = viewModel
         
         
+        // resize headerview
         nameLabel.sizeToFit()
-        nameLabel.frame = CGRect(x: 5, y: imageView.bottom+5, width: width-10, height: nameLabel.height)
-        bioLabel.frame = CGRect(x: 5, y: nameLabel.bottom+5, width: width-10, height: height-imageView.height-nameLabel.height-10)
+        nameLabel.frame = CGRect(x: 5,
+                                 y: imageView.bottom+5,
+                                 width: width-10,
+                                 height: nameLabel.height)
+        
+        bioLabel.frame = CGRect(x: 5,
+                                y: nameLabel.bottom+5,
+                                width: width-10,
+                                height: height-imageView.height-nameLabel.height-10)
         bioLabel.sizeToFit()
-        followEditButton.frame = CGRect(x: 15, y: bioLabel.bottom+5, width: width - 30, height: 35)
+        
+        followEditButton.frame = CGRect(x: 15,
+                                        y: bioLabel.bottom+5,
+                                        width: width - 30,
+                                        height: 35)
         
         
-        frame = CGRect(x: 0, y: 0, width: width, height: nameLabel.height+bioLabel.height+imageView.height+followEditButton.height+30)
-        
-    }
-    
-    
-    private func addAction(){
-        followEditButton.addTarget(self, action: #selector(didTapFollowEditButton), for: .touchUpInside)
-    }
-    
-    @objc private func didTapFollowEditButton(){
-        guard let buttonType = vm?.buttonType else {return}
-        switch buttonType {
-        case .follow(let isFollowing):
-            if isFollowing {
-                delegate?.ProfileHeaderCollectionReusableViewDidTapUnfollow(self)
-            }else {
-                delegate?.ProfileHeaderCollectionReusableViewDidTapFollow(self)
-            }
-        case .edit:
-            delegate?.ProfileHeaderCollectionReusableViewDidTapEditProfile(self)
-        }
+        frame = CGRect(x: 0,
+                       y: 0,
+                       width: width,
+                       height: nameLabel.height+bioLabel.height+imageView.height+followEditButton.height+30)
         
     }
     

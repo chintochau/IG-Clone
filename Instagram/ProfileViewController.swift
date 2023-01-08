@@ -264,6 +264,37 @@ extension ProfileViewController: UICollectionViewDelegate,UICollectionViewDataSo
 }
 
 extension ProfileViewController:ProfileHeaderCountViewDelegate, ProfileHeaderCollectionReusableViewDelegate{
+    func ProfileHeaderCollectionReusableViewDidTapProfileImage(_ view: ProfileHeaderCollectionReusableView) {
+        guard let username = UserDefaults.standard.string(forKey: "username"),
+              username == user.username else {return}
+        let sheet = UIAlertController(title: "Change Picture", message: "Update your profile picture", preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { [weak self] _ in
+            
+            DispatchQueue.main.async{
+                let picker = UIImagePickerController()
+                picker.sourceType = .camera
+                picker.allowsEditing = true
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            }
+            
+        }))
+        sheet.addAction(UIAlertAction(title: "Choose Photo", style: .default,handler: { [weak self] _ in
+            
+            
+            DispatchQueue.main.async{
+                let picker = UIImagePickerController()
+                picker.sourceType = .photoLibrary
+                picker.allowsEditing = true
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            }
+            
+        }))
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(sheet, animated: true)
+    }
+    
     
     func ProfileHeaderCountViewDidTapPostsButton(_ view: ProfileHeaderCountView) {
         collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
@@ -294,21 +325,43 @@ extension ProfileViewController:ProfileHeaderCountViewDelegate, ProfileHeaderCol
     }
     
     func ProfileHeaderCollectionReusableViewDidTapFollow(_ view: ProfileHeaderCollectionReusableView) {
-        DatabaseManager.shared.updateRelationship(state: .follow, for: user.username) { success in
-            print(success)
-//            self.headerViewModel?.buttonType = .follow(isFollowing: true)
-            self.collectionView?.reloadData()
+        DatabaseManager.shared.updateRelationship(state: .follow, for: user.username) { _ in
         }
     }
 
     func ProfileHeaderCollectionReusableViewDidTapUnfollow(_ view: ProfileHeaderCollectionReusableView) {
-        DatabaseManager.shared.updateRelationship(state: .unfollow, for: user.username) { success in
-            print(success)
-//            self.headerViewModel?.buttonType = .follow(isFollowing: false)
-            self.collectionView?.reloadData()
+        DatabaseManager.shared.updateRelationship(state: .unfollow, for: user.username) { _ in
         }
         
     }
 
+    
+}
+
+
+// MARK: - Image Picker Delegate
+extension ProfileViewController:UIImagePickerControllerDelegate,  UINavigationControllerDelegate{
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true,completion: nil)
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage,
+        let username = UserDefaults.standard.string(forKey: "username"), username == user.username  else {return}
+        
+        
+        
+        StorageManager.shared.uploadProfilePicture(username: username, data: image.pngData()) {[weak self] success in
+            if success {
+                self?.headerViewModel = nil
+                self?.posts = []
+                self?.fetchUserData()
+            }
+        }
+        
+        
+    }
     
 }

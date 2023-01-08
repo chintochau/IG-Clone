@@ -200,13 +200,13 @@ final class DatabaseManager {
             //add for sender and receiver
             currentFollowing.document(targetUsername).setData(["valid":true])
             targetUserFollowers.document(currentUsername).setData(["valid":true])
-            print("follow")
+            print("to follow")
             completion(true)
         case .unfollow:
             // remove for sender and receiver
             currentFollowing.document(targetUsername).delete()
             targetUserFollowers.document(currentUsername).delete()
-            print("unfollow")
+            print("to unfollow")
             completion(true)
             
         }
