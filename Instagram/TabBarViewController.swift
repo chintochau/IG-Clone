@@ -43,6 +43,17 @@ class TabBarViewController: UITabBarController {
         nav4.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "heart"), tag: 4)
         nav5.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: 5)
         
+        if #available(iOS 14.0, *) {
+            home.navigationItem.backButtonDisplayMode = .minimal
+            explore.navigationItem.backButtonDisplayMode = .minimal
+            camera.navigationItem.backButtonDisplayMode = .minimal
+            notification.navigationItem.backButtonDisplayMode = .minimal
+            profile.navigationItem.backButtonDisplayMode = .minimal
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
         nav1.navigationBar.tintColor = .label
         nav2.navigationBar.tintColor = .label
         nav3.navigationBar.tintColor = .label

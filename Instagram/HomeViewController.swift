@@ -15,12 +15,24 @@ class HomeViewController: UIViewController {
     
     private var viewModels = [[HomeFeedCellType]]()
     
+    private let activityIndicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .large
+        indicator.startAnimating()
+        indicator.hidesWhenStopped = true
+        indicator.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        return indicator
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Instagram"
         view.backgroundColor = .systemBackground
         configureCollectionView()
         fetchPosts()
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.center = view.center
     }
     
     
@@ -51,13 +63,16 @@ class HomeViewController: UIViewController {
                         })
                     }
                     group.notify(queue: .main) {
+                        
                         self?.collectionView?.reloadData()
+                        self?.activityIndicator.stopAnimating()
                     }
                 case .failure(let error):
                     print(error)
                 }
             }
         }
+        
     }
     
     private func createViewModel(with post:Post, username:String, completion: @escaping (Bool) -> Void ){
@@ -251,15 +266,12 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
     }
     
     func PostCollectionViewCellDidLike(_ cell: PostCollectionViewCell) {
-        print("double tap to like")
-        
         
         // add dummy noti for current user
         let username = UserDefaults.standard.string(forKey: "username")
         let id = NotificationManager.newIdentifier()
-        print("Identifier!!!!!!!!" + id)
         let model = IGNotification(identifier: id,
-                                   notificationType: 3,
+                                   notificationType: 1,
                                    profilePictureUrlString: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg",
                                    username: "ElonMusk11",
                                    dateString: String.date(from: Date()) ?? "Now",

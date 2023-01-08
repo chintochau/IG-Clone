@@ -37,7 +37,7 @@ final class StorageManager {
             completion(url)
         }
     }
-    
+    /// get profile URL for a username
     public func profilePictureURL(for username: String, completion: @escaping (URL?) -> Void){
         let ref = "\(username)/profile_picture.png"
         storage.child(ref).downloadURL { url, error in

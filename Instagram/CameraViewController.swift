@@ -40,7 +40,6 @@ class CameraViewController: UIViewController {
         tabBarController?.tabBar.isHidden = true
         if let session = captureSession, !session.isRunning {
             session.startRunning()
-            print("willappear")
         }
     }
     

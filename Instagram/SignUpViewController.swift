@@ -191,7 +191,7 @@ class SignUpViewController: UIViewController {
             case .success(let user):
                 UserDefaults.standard.setValue(user.email, forKey: "email")
                 UserDefaults.standard.setValue(user.username, forKey: "username")
-                
+                print(UserDefaults.standard.string(forKey: "username"))
                 self?.navigationController?.popToRootViewController(animated: true)
                 self?.completion?()
             case .failure(let error):

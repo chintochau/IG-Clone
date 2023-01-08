@@ -13,6 +13,15 @@ class ExploreViewController: UIViewController, UISearchResultsUpdating {
     
     private let searchVC = UISearchController(searchResultsController: SearchResultViewController())
     
+    private let activityIndicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .large
+        indicator.startAnimating()
+        indicator.hidesWhenStopped = true
+        indicator.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        return indicator
+    }()
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { index, _ -> NSCollectionLayoutSection? in
             // items
@@ -22,7 +31,7 @@ class ExploreViewController: UIViewController, UISearchResultsUpdating {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 0, trailing: 0)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5)
             
             let fullItem = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -30,7 +39,7 @@ class ExploreViewController: UIViewController, UISearchResultsUpdating {
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            fullItem.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 0, trailing: 0)
+            fullItem.contentInsets = NSDirectionalEdgeInsets(top: 0.5, leading: 0.5, bottom: 0.5, trailing: 0.5)
             
             //group
             let verticalGroup = NSCollectionLayoutGroup.vertical(
@@ -100,6 +109,9 @@ class ExploreViewController: UIViewController, UISearchResultsUpdating {
         collectionView.delegate = self
         collectionView.dataSource = self
         fetchData()
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.center = view.center
     }
     
     override func viewDidLayoutSubviews() {
@@ -112,6 +124,7 @@ class ExploreViewController: UIViewController, UISearchResultsUpdating {
             DispatchQueue.main.async{
                 self?.posts = posts
                 self?.collectionView.reloadData()
+                self?.activityIndicator.stopAnimating()
             }
         }
     }
