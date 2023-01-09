@@ -384,9 +384,9 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
         present(vc,animated: true)
     }
     func PostActionCollectionViewCelldidTapCommentButton(_ cell: PostActionCollectionViewCell, index:Int) {
-//        let vc = PostViewController(post: <#T##Post#>)
-//        vc.title = "Post"
-//        navigationController?.pushViewController(vc, animated: true)
+        let vc = PostViewController(post: allPosts[index].post)
+        vc.title = "Post"
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     
