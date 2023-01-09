@@ -231,7 +231,7 @@ extension NotificationViewController:FollowNotificationTableViewCellDelegate,Com
             
             DispatchQueue.main.async{
                 guard let post = post else {return}
-                let vc = PostViewController(post: post)
+                let vc = PostViewController(post: post,username:username)
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
         }

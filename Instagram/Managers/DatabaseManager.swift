@@ -109,7 +109,7 @@ final class DatabaseManager {
         }
     }
     
-    public func explorePosts(completion: @escaping ([Post]) -> Void) {
+    public func explorePosts(completion: @escaping ([(post:Post, owner:String)]) -> Void) {
         
         let ref = database.collection("users")
         ref.getDocuments { snapshot, error in
@@ -119,7 +119,7 @@ final class DatabaseManager {
             }
             
             let group = DispatchGroup()
-            var appregatePosts = [Post]()
+            var appregatePosts = [(post:Post, owner:String)]()
             
             users.forEach{ user in
                 let username = user.username
@@ -134,7 +134,9 @@ final class DatabaseManager {
                         group.leave()
                     }
                     
-                    appregatePosts.append(contentsOf:posts)
+                    appregatePosts.append(contentsOf:posts.compactMap({ post in
+                        return (post:post,owner:username)
+                    }))
                 }
                 
             }
@@ -171,6 +173,7 @@ final class DatabaseManager {
         
     }
     
+    /// get a single post with postidentifier from uername
     public func getPost(with identifier:String, from username:String, completion: @escaping (Post?) -> Void) {
         let ref = database.collection("users").document(username).collection("posts").document(identifier)
 

@@ -6,15 +6,18 @@
 //
 
 import UIKit
+import SafariServices
 
 class SettingViewController: UIViewController {
     
     private let tableView:UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: .zero, style: .grouped)
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
         
     }()
+    
+    private var sections: [SettingsSection] = []
     
     public var completion: (() -> Void)?
     
@@ -30,6 +33,7 @@ class SettingViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        configureModels()
         createTableFooter()
         
     }
@@ -50,6 +54,50 @@ class SettingViewController: UIViewController {
         footer.addSubview(button)
         tableView.tableFooterView = footer
     }
+    
+    private func configureModels(){
+        sections.append(
+            SettingsSection(title: "App", options: [
+                SettingOption(title: "Rate App", image: UIImage(systemName: "star"), color: .label, handler: {
+                    
+                    guard let url = URL(string: "https://apps.apple.com/us/app/instagram/id389801252") else {return}
+                    UIApplication.shared.open(url)
+                            
+                }),
+                SettingOption(title: "Share App", image: UIImage(systemName: "square.and.arrow.up"), color: .label, handler: { [weak self] in
+                    
+                    guard let url = URL(string: "https://apps.apple.com/us/app/instagram/id389801252") else {return}
+                    let vc = UIActivityViewController(activityItems: [url], applicationActivities: [])
+                    self?.present(vc, animated: true)
+                    
+                })
+            ])
+        )
+        
+        sections.append(
+            SettingsSection(title: "Information", options: [
+                SettingOption(title: "Terms of Service", image: UIImage(systemName: "doc"), color: .label, handler: {
+                    
+                    guard let url = URL(string: "https://help.instagram.com/581066165581870/?helpref=uf_share") else {return}
+                    let vc = SFSafariViewController(url: url)
+                    self.present(vc, animated: true)
+                    
+                }),
+                SettingOption(title: "Privacy Policy", image: UIImage(systemName: "hand.raised"), color: .label, handler: {
+                    guard let url = URL(string: "https://privacycenter.instagram.com/policy") else {return}
+                    let vc = SFSafariViewController(url: url)
+                    self.present(vc, animated: true)
+                }),
+                SettingOption(title: "Help", image: UIImage(systemName: "questionmark.circle"), color: .label, handler: {
+                    guard let url = URL(string: "https://help.instagram.com") else {return}
+                    let vc = SFSafariViewController(url: url)
+                    self.present(vc, animated: true)
+                })
+            ])
+        )
+        
+    }
+    
     
     @objc private func didTapSignOut(){
         
@@ -84,15 +132,32 @@ class SettingViewController: UIViewController {
 
 extension SettingViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return sections[section].options.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let model = sections[indexPath.section].options[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = model.title
+        cell.imageView?.image = model.image
+        cell.imageView?.tintColor = model.color
+        cell.accessoryType = .disclosureIndicator
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let model = sections[indexPath.section].options[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
+        model.handler()
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return sections[section].title
     }
     
 }

@@ -9,7 +9,7 @@ import UIKit
 
 class ExploreViewController: UIViewController, UISearchResultsUpdating {
     
-    private var posts = [Post]()
+    private var posts = [Post](), owners = [String]()
     
     private let searchVC = UISearchController(searchResultsController: SearchResultViewController())
     
@@ -122,7 +122,10 @@ class ExploreViewController: UIViewController, UISearchResultsUpdating {
     private func fetchData(){
         DatabaseManager.shared.explorePosts { [weak self] posts in
             DispatchQueue.main.async{
-                self?.posts = posts
+                self?.posts = posts.compactMap({ result in
+                    return result.post
+                })
+                self?.owners = posts.compactMap{ $0.owner }
                 self?.collectionView.reloadData()
                 self?.activityIndicator.stopAnimating()
             }
@@ -172,8 +175,8 @@ extension ExploreViewController:UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let post = posts[indexPath.row]
-        let vc = PostViewController(post:post)
+        let post = posts[indexPath.row], owner = owners[indexPath.row]
+        let vc = PostViewController(post:post,username:owner)
         navigationController?.pushViewController(vc, animated: true)
         
     }

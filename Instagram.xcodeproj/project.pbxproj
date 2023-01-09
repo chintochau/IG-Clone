@@ -10,6 +10,8 @@
 		470BD91E2965E09A008B5762 /* PostEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470BD91D2965E09A008B5762 /* PostEditViewController.swift */; };
 		470BD9202965F8F0008B5762 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */; };
 		470BD922296686B0008B5762 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470BD921296686B0008B5762 /* SearchResultViewController.swift */; };
+		473459FC296C8BC700DD440F /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473459FB296C8BC700DD440F /* SettingsModels.swift */; };
+		47345A00296CBC2A00DD440F /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473459FF296CBC2A00DD440F /* CommentCollectionViewCell.swift */; };
 		478AEB8F2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB8E2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift */; };
 		478AEB912964E3AC0005E962 /* PostCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB902964E3AC0005E962 /* PostCollectionViewCellViewModel.swift */; };
 		478AEB932964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB922964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift */; };
@@ -76,6 +78,8 @@
 		470BD91D2965E09A008B5762 /* PostEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditViewController.swift; sourceTree = "<group>"; };
 		470BD91F2965F8F0008B5762 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		470BD921296686B0008B5762 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		473459FB296C8BC700DD440F /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
+		473459FF296CBC2A00DD440F /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		478AEB8E2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB902964E3AC0005E962 /* PostCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB922964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -269,6 +273,7 @@
 				478AEB9A2964E5DC0005E962 /* HomeFeedCelltype.swift */,
 				47D0E46229687FC1001A0551 /* NotificationCellType.swift */,
 				47D0E46F296A3FBB001A0551 /* UserInfo.swift */,
+				473459FB296C8BC700DD440F /* SettingsModels.swift */,
 			);
 			name = Models;
 			path = "New Group1";
@@ -324,6 +329,7 @@
 				47FD1C1C2964F14400EDE474 /* PostLikesCollectionViewCell.swift */,
 				47FD1C1E2964F16100EDE474 /* PostCaptionCollectionViewCell.swift */,
 				47FD1C202964F17100EDE474 /* PostDateTimeCollectionViewCell.swift */,
+				473459FF296CBC2A00DD440F /* CommentCollectionViewCell.swift */,
 			);
 			path = "Home Cells";
 			sourceTree = "<group>";
@@ -463,6 +469,7 @@
 			files = (
 				47EA7D212963A284005CDC4E /* SignUpViewController.swift in Sources */,
 				47FD1C1D2964F14400EDE474 /* PostLikesCollectionViewCell.swift in Sources */,
+				473459FC296C8BC700DD440F /* SettingsModels.swift in Sources */,
 				47EA7D152963A1F5005CDC4E /* NotificationViewController.swift in Sources */,
 				47D0E46C2969E7EE001A0551 /* ProfileHeaderCountView.swift in Sources */,
 				47D0E4682969DAF0001A0551 /* ProfileHeaderCollectionReusableView.swift in Sources */,
@@ -506,6 +513,7 @@
 				47EA7D2D2963A369005CDC4E /* Post.swift in Sources */,
 				47D0E45F29687BE2001A0551 /* LikeNotificationTableViewCell.swift in Sources */,
 				478AEB932964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift in Sources */,
+				47345A00296CBC2A00DD440F /* CommentCollectionViewCell.swift in Sources */,
 				47EA7D332963A39F005CDC4E /* AuthManager.swift in Sources */,
 				47D0E45B29687B3D001A0551 /* FollowNotificationTableViewCell.swift in Sources */,
 				47EA7CF929639CBD005CDC4E /* SceneDelegate.swift in Sources */,
