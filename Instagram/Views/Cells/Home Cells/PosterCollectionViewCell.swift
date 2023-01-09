@@ -8,13 +8,15 @@ import SDWebImage
 import UIKit
 
 protocol PosterCollectionViewCellDelegate:AnyObject {
-    func PosterCollectionViewCelldidTapMoreButton(_ cell:PosterCollectionViewCell)
-    func PosterCollectionViewCelldidTapUsernameButton(_ cell:PosterCollectionViewCell)
+    func PosterCollectionViewCelldidTapMoreButton(_ cell:PosterCollectionViewCell, index:Int)
+    func PosterCollectionViewCelldidTapUsernameButton(_ cell:PosterCollectionViewCell, username:String)
 }
 
 class PosterCollectionViewCell: UICollectionViewCell {
     
     public weak var delegate:PosterCollectionViewCellDelegate?
+    
+    private var index = 0
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -69,10 +71,11 @@ class PosterCollectionViewCell: UICollectionViewCell {
     
     
     @objc private func didTapMoreButton(){
-        delegate?.PosterCollectionViewCelldidTapMoreButton(self)
+        delegate?.PosterCollectionViewCelldidTapMoreButton(self, index:self.index)
     }
     @objc private func didTapUsername(){
-        delegate?.PosterCollectionViewCelldidTapUsernameButton(self)
+        guard let name = usernameLabel.text else {return}
+        delegate?.PosterCollectionViewCelldidTapUsernameButton(self, username: name)
     }
     
     override func layoutSubviews() {
@@ -90,9 +93,10 @@ class PosterCollectionViewCell: UICollectionViewCell {
         usernameLabel.text = nil
     }
     
-    func configure(with viewModel: PosterCollectionViewCellViewModel) {
+    func configure(with viewModel: PosterCollectionViewCellViewModel,index:Int) {
         imageView.sd_setImage(with: viewModel.profilePictureUrl)
         usernameLabel.text = viewModel.username
+        self.index = index
     }
     
     

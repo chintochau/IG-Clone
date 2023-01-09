@@ -15,6 +15,10 @@ class HomeViewController: UIViewController {
     
     private var viewModels = [[HomeFeedCellType]]()
     
+    private var allPosts:[(post:Post,owner:String)] = []
+    
+    private var observer: NSObjectProtocol?
+    
     private let activityIndicator:UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.style = .large
@@ -35,6 +39,11 @@ class HomeViewController: UIViewController {
         
         view.addSubview(activityIndicator)
         activityIndicator.center = view.center
+        
+        observer = NotificationCenter.default.addObserver(forName: .didPostNotification, object: nil, queue: .main, using: { [weak self] _ in
+            self?.viewModels.removeAll()
+            self?.fetchPosts()
+        })
     }
     
     
@@ -48,75 +57,87 @@ class HomeViewController: UIViewController {
         guard let username = UserDefaults.standard.string(forKey: "username") else {return}
         
         let userGroup = DispatchGroup()
-        var e = 0
-        var l = 0
-        var se = 0
-        var sl = 0
-        
-        e += 1
+        var allPosts:[(post:Post,owner:String)] = []
         userGroup.enter()
-        print("ENTER\(e)")
         DatabaseManager.shared.following(for: username) { usernames in
             
             defer {userGroup.leave()}
-            l += 1
-            print("LEAVE\(l)")
-            
             let users = usernames + [username]
             for current in users {
                 
                 
-                e += 1
                 userGroup.enter()
-                print("ENTER\(e)")
                 
                 // loop for each user
-                DatabaseManager.shared.posts(for: current) { [weak self] result in
+                DatabaseManager.shared.posts(for: current) {result in
                     
                     DispatchQueue.main.async{
+                        
                         switch result{
                         case .success(let posts):
+                            defer {userGroup.leave()}
+                            allPosts.append(contentsOf: posts.compactMap({ (post: $0, owner: current)
+                            }))
                             
-                            
-                            let group = DispatchGroup()
-                            
-                            posts.forEach { model in
-                                group.enter()
-                                se+=1
-                                print("enter\(se) - \(model.postedDate)")
-                                
-                                self?.createViewModel(with: model,username: current, completion: { success in
-                                    defer {group.leave()}
-                                    sl+=1
-                                    print("leave\(sl)")
-                                    
-                                    if !success {print("faile to create VM")}
-                                })
-                            }
-                            
-                            group.notify(queue: .main) {
-                                defer {userGroup.leave()}
-                                l += 1
-                                print("LEAVE\(l)")
-                            }
-                            
-                        case .failure(let error): print(error)
+                        case .failure(_): break
                         }
                     }
                 }
-                
-                // end loop for each user
-                
             }
         }
         
         userGroup.notify(queue: .main) {
-            print("DONE")
-            self.collectionView?.reloadData()
-            self.activityIndicator.stopAnimating()
+            let group = DispatchGroup()
+            self.allPosts = allPosts
+            
+            allPosts.forEach { post in
+                group.enter()
+                self.createViewModel(with: post.post, username: post.owner) { success in
+                    do{
+                        group.leave()
+                    }
+                }
+            }
+            
+            group.notify(queue: .main){
+                
+                self.sortData()
+                self.collectionView?.reloadData()
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
+    private func sortData(){
+        
+        allPosts.sort { first, second in
+            first.post.date > second.post.date
         }
         
-        
+        viewModels.sort { first, second in
+            var date1: Date?
+            var date2: Date?
+            
+            first.forEach { type in
+                switch type{
+                case .timestamp(ViewModel: let vm):
+                    date1 = vm.date
+                default: break
+                }
+            }
+            second.forEach { type in
+                switch type{
+                case .timestamp(ViewModel: let vm):
+                    date2 = vm.date
+                default: break
+                }
+            }
+            if let date1 = date1, let date2 = date2 {
+                return date1 > date2
+            } else {
+                return false
+            }
+        }
     }
     
     private func createViewModel(with post:Post, username:String, completion: @escaping (Bool) -> Void ){
@@ -151,7 +172,7 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
         switch cellType {
         case .poster( let ViewModel):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as! PosterCollectionViewCell
-            cell.configure(with: ViewModel)
+            cell.configure(with: ViewModel,index: indexPath.section)
             cell.delegate = self
             return cell
             
@@ -163,7 +184,7 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
             
         case .actions( let ViewModel):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostActionCollectionViewCell.identifier, for: indexPath) as! PostActionCollectionViewCell
-            cell.configure(with: ViewModel)
+            cell.configure(with: ViewModel, index: indexPath.section)
             cell.delegate = self
             return cell
             
@@ -326,33 +347,46 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
         
     }
     
-    func PosterCollectionViewCelldidTapUsernameButton(_ cell: PosterCollectionViewCell) {
-        let vc = ProfileViewController(user: User(username: "jjchau", email: "jj@jj.com"))
+    func PosterCollectionViewCelldidTapUsernameButton(_ cell: PosterCollectionViewCell, username: String) {
+        let vc = ProfileViewController(user: User(username: username, email: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func PosterCollectionViewCelldidTapMoreButton(_ cell: PosterCollectionViewCell) {
+    func PosterCollectionViewCelldidTapMoreButton(_ cell: PosterCollectionViewCell, index:Int) {
+        
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Share Post", style: .default,handler: { [weak self] _ in
+            guard let postURL = URL(string: self?.allPosts[index].post.postUrlString ?? "") else {return}
+            let vc = UIActivityViewController(activityItems: ["Check out this cool post!", postURL],
+                                              applicationActivities: [])
+            self?.present(vc,animated: true)
+        }))
+        
         actionSheet.addAction(UIAlertAction(title: "Report Post", style: .destructive))
-        actionSheet.addAction(UIAlertAction(title: "Share Post", style: .default))
+        
+        
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(actionSheet,animated: true)
     }
     
-    func PostActionCollectionViewCelldidTapLikeButton(_ cell: PostActionCollectionViewCell, isLike: Bool) {
+    func PostActionCollectionViewCelldidTapLikeButton(_ cell: PostActionCollectionViewCell, isLike: Bool, index:Int) {
         //call db to update like state
+        
     }
     
-    func PostActionCollectionViewCelldidTapSendButton(_ cell: PostActionCollectionViewCell) {
-        let vc = UIActivityViewController(activityItems: ["Sharing from IG"], applicationActivities: [])
+    func PostActionCollectionViewCelldidTapSendButton(_ cell: PostActionCollectionViewCell, index:Int) {
+        guard let postURL = URL(string: allPosts[index].post.postUrlString) else {return}
+        
+        let vc = UIActivityViewController(activityItems: ["Check out this cool post!", postURL],
+                                          applicationActivities: [])
         present(vc,animated: true)
     }
-    func PostActionCollectionViewCelldidTapCommentButton(_ cell: PostActionCollectionViewCell) {
+    func PostActionCollectionViewCelldidTapCommentButton(_ cell: PostActionCollectionViewCell, index:Int) {
 //        let vc = PostViewController(post: <#T##Post#>)
 //        vc.title = "Post"
 //        navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     
 }

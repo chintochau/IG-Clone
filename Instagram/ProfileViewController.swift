@@ -13,6 +13,8 @@ class ProfileViewController: UIViewController {
     
     private var posts:[Post]
     
+    private var observer:NSObjectProtocol?
+    
     private var isCurrentUser:Bool {
         return user.username.lowercased() == UserDefaults.standard.string(forKey: "username")?.lowercased() ? true : false
     }
@@ -54,6 +56,13 @@ class ProfileViewController: UIViewController {
         fetchUserData()
         view.addSubview(activityIndicator)
         activityIndicator.center = view.center
+        
+        if isCurrentUser{
+            observer = NotificationCenter.default.addObserver(forName: .didPostNotification, object: nil, queue: .main, using: { [weak self] _ in
+                self?.posts.removeAll()
+                self?.fetchUserData()
+            })
+        }
     }
     
     override func viewDidLayoutSubviews() {
