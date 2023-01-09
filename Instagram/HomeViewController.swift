@@ -354,6 +354,7 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
     
     func PosterCollectionViewCelldidTapMoreButton(_ cell: PosterCollectionViewCell, index:Int) {
         
+        
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Share Post", style: .default,handler: { [weak self] _ in
