@@ -15,6 +15,9 @@ class PostViewController: UIViewController {
     
     private var viewModel = [HomeFeedCellType]()
     
+    private var observer: NSObjectProtocol?
+    private var hideObserver: NSObjectProtocol?
+    
     private let activityIndicator:UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.style = .large
@@ -22,6 +25,12 @@ class PostViewController: UIViewController {
         indicator.hidesWhenStopped = true
         indicator.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
         return indicator
+    }()
+    
+    private let commentBar:CommentBarView = {
+        let commentBar = CommentBarView()
+        
+        return commentBar
     }()
     
     // MARK: - Init
@@ -48,13 +57,36 @@ class PostViewController: UIViewController {
         fetchPost()
         view.addSubview(activityIndicator)
         activityIndicator.center = view.center
-        
+        view.addSubview(commentBar)
+        commentBar.delegate = self
+        observeKeyboardChange()
     }
     
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        collectionView?.frame = view.safeAreaLayoutGuide.layoutFrame
+        
+        collectionView?.frame = CGRect(x: 0, y: 0, width: view.width, height: view.height-50-view.safeAreaInsets.bottom)
+        
+        
+        commentBar.frame = CGRect(x: 0, y: view.height-view.safeAreaInsets.bottom-50, width: view.width, height: 50)
+    }
+    
+    private func observeKeyboardChange(){
+        observer = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { notification in
+            guard let userInfo = notification.userInfo,
+                  let height = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height else {return}
+            
+            
+            //            self.commentBar.frame = CGRect(x: 0, y: self.view.height-50-height, width: self.view.width, height: 50)
+            self.view.frame.origin.y -= height
+        }
+        
+        hideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { notification in
+            
+            //            self.commentBar.frame = CGRect(x: 0, y: self.view.height-self.view.safeAreaInsets.bottom-50, width: self.view.width, height: 50)
+            self.view.frame.origin.y = 0
+        }
     }
     
     // MARK: - Fetch Posts
@@ -66,7 +98,6 @@ class PostViewController: UIViewController {
             guard let post = post else {return}
             
             self.createViewModel(with: post, username: self.username) { success in
-                print(success)
                 self.collectionView?.reloadData()
                 self.activityIndicator.stopAnimating()
             }
@@ -240,19 +271,30 @@ extension PostViewController {
         collectionView.register(PostDateTimeCollectionViewCell.self, forCellWithReuseIdentifier: PostDateTimeCollectionViewCell.identifier)
         collectionView.register(PostCaptionCollectionViewCell.self, forCellWithReuseIdentifier: PostCaptionCollectionViewCell.identifier)
         collectionView.register(CommentCollectionViewCell.self, forCellWithReuseIdentifier: CommentCollectionViewCell.identifier)
-        
+        collectionView.register(CommentBarView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter  , withReuseIdentifier: CommentBarView.identifier)
         
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.keyboardDismissMode = .interactive
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         self.collectionView = collectionView
     }
 }
 
 // MARK: - Actions
-extension PostViewController:PosterCollectionViewCellDelegate,PostActionCollectionViewCellDelegate,PostCollectionViewCellDelegate,PostLikesCollectionViewCellDelegate, PostCaptionCollectionViewCellDelegate {
+extension PostViewController:PosterCollectionViewCellDelegate,PostActionCollectionViewCellDelegate,PostCollectionViewCellDelegate,PostLikesCollectionViewCellDelegate, PostCaptionCollectionViewCellDelegate,CommentBarViewDelegate {
+    
+    func CommentBarViewDidTapSend(_ commentBarView: CommentBarView, with text: String) {
+        
+        guard let currentUsername = UserDefaults.standard.string(forKey: "username") else {return}
+            DatabaseManager.shared.setComment(postID: post.id, owner: username, comment: Comment(username: currentUsername, comment: text, dateSDtring: String.date(from: Date()) ?? "Now" )) { _ in
+                
+            }
+        
+    }
+    
     
     func PostCaptionCollectionViewCellDidTapCaption(_ cell: PostCaptionCollectionViewCell) {
         print("caption")
@@ -318,6 +360,8 @@ extension PostViewController:PosterCollectionViewCellDelegate,PostActionCollecti
                                           applicationActivities: [])
         present(vc,animated: true)
     }
+    
+    
     func PostActionCollectionViewCelldidTapCommentButton(_ cell: PostActionCollectionViewCell, index:Int) {
         let vc = PostViewController(post: post,username: username)
         vc.title = "Post"

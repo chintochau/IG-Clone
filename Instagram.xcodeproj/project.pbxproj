@@ -12,6 +12,8 @@
 		470BD922296686B0008B5762 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470BD921296686B0008B5762 /* SearchResultViewController.swift */; };
 		473459FC296C8BC700DD440F /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473459FB296C8BC700DD440F /* SettingsModels.swift */; };
 		47345A00296CBC2A00DD440F /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473459FF296CBC2A00DD440F /* CommentCollectionViewCell.swift */; };
+		47345A02296CCB1900DD440F /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47345A01296CCB1900DD440F /* Comment.swift */; };
+		47345A04296CE2A400DD440F /* CommentBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47345A03296CE2A400DD440F /* CommentBarView.swift */; };
 		478AEB8F2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB8E2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift */; };
 		478AEB912964E3AC0005E962 /* PostCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB902964E3AC0005E962 /* PostCollectionViewCellViewModel.swift */; };
 		478AEB932964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AEB922964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift */; };
@@ -80,6 +82,8 @@
 		470BD921296686B0008B5762 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		473459FB296C8BC700DD440F /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
 		473459FF296CBC2A00DD440F /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
+		47345A01296CCB1900DD440F /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		47345A03296CE2A400DD440F /* CommentBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBarView.swift; sourceTree = "<group>"; };
 		478AEB8E2964E34A0005E962 /* PosterCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB902964E3AC0005E962 /* PostCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		478AEB922964E3E90005E962 /* PostActionCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				47D0E4672969DAF0001A0551 /* ProfileHeaderCollectionReusableView.swift */,
 				47D0E46B2969E7EE001A0551 /* ProfileHeaderCountView.swift */,
 				47D0E475296A9BFA001A0551 /* IGFollowButton.swift */,
+				47345A03296CE2A400DD440F /* CommentBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -274,6 +279,7 @@
 				47D0E46229687FC1001A0551 /* NotificationCellType.swift */,
 				47D0E46F296A3FBB001A0551 /* UserInfo.swift */,
 				473459FB296C8BC700DD440F /* SettingsModels.swift */,
+				47345A01296CCB1900DD440F /* Comment.swift */,
 			);
 			name = Models;
 			path = "New Group1";
@@ -496,6 +502,7 @@
 				47EA7D2B2963A364005CDC4E /* User.swift in Sources */,
 				47EA7D232963A2A1005CDC4E /* CaptionViewController.swift in Sources */,
 				478AEB912964E3AC0005E962 /* PostCollectionViewCellViewModel.swift in Sources */,
+				47345A04296CE2A400DD440F /* CommentBarView.swift in Sources */,
 				47D0E472296A5A68001A0551 /* EditProfileViewController.swift in Sources */,
 				47D0E46129687DAE001A0551 /* NotificationManager.swift in Sources */,
 				47EA7D432963C6CE005CDC4E /* IGTextField.swift in Sources */,
@@ -522,6 +529,7 @@
 				47EA7D1F2963A27F005CDC4E /* SignInViewController.swift in Sources */,
 				470BD9202965F8F0008B5762 /* PhotoCollectionViewCell.swift in Sources */,
 				47EA7D3B2963A3CF005CDC4E /* HapticsManager.swift in Sources */,
+				47345A02296CCB1900DD440F /* Comment.swift in Sources */,
 				47FD1C172964F07200EDE474 /* PosterCollectionViewCell.swift in Sources */,
 				47EA7D252963A2AE005CDC4E /* ListViewController.swift in Sources */,
 				47EA7D172963A1FB005CDC4E /* CameraViewController.swift in Sources */,

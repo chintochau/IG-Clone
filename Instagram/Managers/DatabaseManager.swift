@@ -315,4 +315,28 @@ final class DatabaseManager {
         }
     }
     
+    
+    // MARK: - Comment
+    
+    public func getComments(postID:String, owner:String, completion: @escaping ([Comment]) -> Void ){
+        let ref = database.collection("users").document(owner).collection("posts").document(postID).collection("comments")
+        
+        ref.getDocuments { snapshot, error in
+            guard let comments = snapshot?.documents.compactMap({ Comment(with: $0.data())}) else {return}
+            
+            completion(comments)
+        }
+    }
+    
+    public func setComment(postID:String, owner:String,comment:Comment, completion: @escaping (Bool) -> Void ){
+        let newIdentifier = "\(postID)_\(comment.username)_\(Date().timeIntervalSince1970)_\(Int.random(in: 0...1000))"
+        let ref = database.collection("users").document(owner).collection("posts").document(postID).collection("comments").document(newIdentifier)
+        guard let comment = comment.asDictionary() else {return}
+        ref.setData(comment) { error in
+            if error == nil {
+                completion(true)
+            }else {completion(false)}
+            
+        }
+    }
 }

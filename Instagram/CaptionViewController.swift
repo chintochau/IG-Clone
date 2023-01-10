@@ -96,7 +96,6 @@ class CaptionViewController: UIViewController,UITextViewDelegate {
         guard let username = UserDefaults.standard.string(forKey: "username") else {
             return nil
         }
-        
         return "\(username)_\(randomNumber)_\(timeStamp)"
         
         
