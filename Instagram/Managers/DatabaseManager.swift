@@ -339,4 +339,26 @@ final class DatabaseManager {
             
         }
     }
+    
+    enum LikeState {
+        case like,unlike
+    }
+    
+    public func updateLike(state: LikeState, postID:String, owner:String, completion:@escaping (Bool) -> Void) {
+        guard let currentUser = UserDefaults.standard.string(forKey: "username") else {return}
+        let ref = database.collection("users").document(owner).collection("posts").document(postID)
+        switch state{
+        case .like:
+            ref.updateData([
+                "likers":FieldValue.arrayUnion([currentUser])
+            ])
+            completion(true)
+        case .unlike:
+            ref.updateData([
+                "likers":FieldValue.arrayRemove([currentUser])
+            ])
+            completion(true)
+            
+        }
+    }
 }

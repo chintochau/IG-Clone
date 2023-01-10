@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PostActionCollectionViewCellDelegate:AnyObject {
-    func PostActionCollectionViewCelldidTapLikeButton(_ cell:PostActionCollectionViewCell, isLike:Bool, index:Int)
+    func PostActionCollectionViewCelldidTapLikeButton(_ cell:PostActionCollectionViewCell, toLike:Bool, index:Int)
     func PostActionCollectionViewCelldidTapCommentButton(_ cell:PostActionCollectionViewCell, index:Int)
     func PostActionCollectionViewCelldidTapSendButton(_ cell:PostActionCollectionViewCell, index:Int)
 }
@@ -20,7 +20,7 @@ class PostActionCollectionViewCell: UICollectionViewCell {
     private var isLiked = false
     private var index:Int = 0
     
-    private let likeButton: UIButton = {
+    public let likeButton: UIButton = {
         let button = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
         let image = UIImage(systemName: "heart", withConfiguration: config)
@@ -60,12 +60,14 @@ class PostActionCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func didTapLikeButton (){
+        print("1\(isLiked)")
         isLiked = !isLiked
+        print("2\(isLiked)")
         let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
         let image = UIImage(systemName: isLiked ? "heart.fill":"heart", withConfiguration: config)
         likeButton.tintColor = isLiked ? .systemRed:.label
         likeButton.setImage(image, for: .normal)
-        delegate?.PostActionCollectionViewCelldidTapLikeButton(self,isLike: isLiked, index:self.index)
+        delegate?.PostActionCollectionViewCelldidTapLikeButton(self,toLike: isLiked, index:self.index)
     }
     @objc private func didTapCommentButton(){
         delegate?.PostActionCollectionViewCelldidTapCommentButton(self, index:self.index)

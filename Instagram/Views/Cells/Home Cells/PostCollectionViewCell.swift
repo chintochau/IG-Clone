@@ -9,14 +9,15 @@ import UIKit
 import SDWebImage
 
 protocol PostCollectionViewCellDelegate:AnyObject {
-    func PostCollectionViewCellDidLike(_ cell: PostCollectionViewCell)
+    func PostCollectionViewCellDidDoubleTapToLike(_ cell: PostCollectionViewCell, index:Int)
 }
 
 class PostCollectionViewCell: UICollectionViewCell {
     
     public weak var delegate:PostCollectionViewCellDelegate?
+    private var index:Int = 0
     
-    private let contentImageView:UIImageView = {
+    public let contentImageView:UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
@@ -24,7 +25,7 @@ class PostCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let heartImageView:UIImageView = {
+    public let heartImageView:UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "heart.fill",withConfiguration: UIImage.SymbolConfiguration(pointSize: 50))
         imageView.tintColor = .white
@@ -51,23 +52,23 @@ class PostCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func didDoubleTapToLike(){
-        heartImageView.isHidden = false
-        UIView.animate(withDuration: 0.4, delay: 0) {
-            self.heartImageView.alpha = 1
-            self.heartImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-            self.heartImageView.center = self.contentImageView.center
-        }completion: { done in
-            if done {
-                UIView.animate(withDuration: 0.4, delay: 0) {
-                    self.heartImageView.alpha = 0
-                    self.heartImageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
-                    self.heartImageView.center = self.contentImageView.center
-                }completion: { _ in
-                    self.heartImageView.isHidden = true
-                }
-            }
-        }
-        delegate?.PostCollectionViewCellDidLike(self)
+//        heartImageView.isHidden = false
+//        UIView.animate(withDuration: 0.4, delay: 0) {
+//            self.heartImageView.alpha = 1
+//            self.heartImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+//            self.heartImageView.center = self.contentImageView.center
+//        }completion: { done in
+//            if done {
+//                UIView.animate(withDuration: 0.4, delay: 0) {
+//                    self.heartImageView.alpha = 0
+//                    self.heartImageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+//                    self.heartImageView.center = self.contentImageView.center
+//                }completion: { _ in
+//                    self.heartImageView.isHidden = true
+//                }
+//            }
+//        }
+        delegate?.PostCollectionViewCellDidDoubleTapToLike(self,index:index)
     }
     
     required init?(coder: NSCoder) {
@@ -87,8 +88,9 @@ class PostCollectionViewCell: UICollectionViewCell {
         contentImageView.image = nil
     }
     
-    func configure(with viewModel: PostCollectionViewCellViewModel) {
+    func configure(with viewModel: PostCollectionViewCellViewModel,index:Int) {
         contentImageView.sd_setImage(with: viewModel.postUrl)
+        self.index = index
     }
     
 }

@@ -143,13 +143,14 @@ class HomeViewController: UIViewController {
     private func createViewModel(with post:Post, username:String, completion: @escaping (Bool) -> Void ){
         
         StorageManager.shared.profilePictureURL(for: username) { [weak self] profileURL in
-            guard let postURL = URL(string: post.postUrlString), let profileURL = profileURL else {
+            guard let postURL = URL(string: post.postUrlString), let profileURL = profileURL,
+            let currentUser = UserDefaults.standard.string(forKey: "username") else {
                 fatalError("faile to get url") }
             
             let postData:[HomeFeedCellType] = [
                 .poster(ViewModel: PosterCollectionViewCellViewModel(username: username, profilePictureUrl: profileURL)),
                 .post(ViewModel: PostCollectionViewCellViewModel(postUrl: postURL)),
-                .actions(ViewModel: PostActionCollectionViewCellViewModel(isLiked: false)),
+                .actions(ViewModel: PostActionCollectionViewCellViewModel(isLiked: post.likers.contains(currentUser) )),
                 .likeCount(ViewModel: PostLikesCollectionViewCellViewModel(likers: post.likers)),
                 .caption(ViewModel: PostCaptionCollectionViewCellViewModel(username: username, caption: post.caption)),
                 .timestamp(ViewModel: PostDateTimeCollectionViewCellViewModel(date: DateFormatter.formatter.date(from: post.postedDate) ?? Date()))
@@ -178,7 +179,7 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
             
         case .post( let ViewModel):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostCollectionViewCell.identifier, for: indexPath) as! PostCollectionViewCell
-            cell.configure(with: ViewModel)
+            cell.configure(with: ViewModel, index:indexPath.section)
             cell.delegate = self
             return cell
             
@@ -205,6 +206,10 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
             cell.configure(with: ViewModel)
             return cell
             
+        case .comment(comment: let comment):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.identifier, for: indexPath) as! CommentCollectionViewCell
+            return cell
+            
         }
         
     }
@@ -225,7 +230,7 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
 extension HomeViewController {
     // MARK: - CollectionView
     private func configureCollectionView(){
-        let sectionHeight:CGFloat = 300+view.width
+        let sectionHeight:CGFloat = 340+view.width
         
         let collectionView = UICollectionView(
             frame: .zero,
@@ -274,6 +279,13 @@ extension HomeViewController {
                             heightDimension: .absolute(40)
                         )
                     )
+                    // Comment cell
+                    let commentItem = NSCollectionLayoutItem(
+                        layoutSize: NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(1),
+                            heightDimension: .absolute(40)
+                        )
+                    )
                     
                     // Group
                     let group = NSCollectionLayoutGroup.vertical(
@@ -288,7 +300,8 @@ extension HomeViewController {
                             actionItem,
                             likeCountItem,
                             captionItem,
-                            timestampItem
+                            timestampItem,
+                            commentItem
                         ]
                     )
                     
@@ -323,26 +336,83 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
         print("caption")
     }
     
-    func PostLikesCollectionViewCellDidTapLikeCount(_ cell: PostLikesCollectionViewCell) {
+    func PostLikesCollectionViewCellDidTapLikeCount(_ cell: PostLikesCollectionViewCell,likers:[String]) {
         // present like people
-        let vc = ListViewController(type: .likers(username: []))
+        let vc = ListViewController(type: .likers(username: likers))
         vc.title = "Liked by"
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func PostCollectionViewCellDidLike(_ cell: PostCollectionViewCell) {
+    
+    func PostCollectionViewCellDidDoubleTapToLike(_ cell: PostCollectionViewCell,index:Int) {
+        let model = allPosts[index]
         
-        // add dummy noti for current user
-        let username = UserDefaults.standard.string(forKey: "username")
-        let id = NotificationManager.newIdentifier()
-        let model = IGNotification(identifier: id,
-                                   notificationType: 1,
-                                   profilePictureUrlString: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg",
-                                   username: "ElonMusk11",
-                                   dateString: String.date(from: Date()) ?? "Now",
-                                   isFollowing: nil, postId: "123",
-                                   PostUrl: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg")
-        NotificationManager.shared.create(notification: model, for: username ?? "jjchau")
+        DatabaseManager.shared.updateLike(state: .like, postID: model.post.id, owner: model.owner) { success in
+            guard let currentUser = UserDefaults.standard.string(forKey: "username") else {return}
+            if success{
+                var likers:[String] = []
+                switch self.viewModels[index][3]{
+                case .likeCount(let model):
+                    likers = model.likers
+                    likers.appendIfNotContains(currentUser)
+                default: print("should not execute")
+                }
+                
+                self.viewModels[index][2] = .actions(ViewModel: PostActionCollectionViewCellViewModel(isLiked: likers.contains(currentUser)))
+                self.viewModels[index][3] = .likeCount(ViewModel: PostLikesCollectionViewCellViewModel(likers: likers ))
+                cell.heartImageView.isHidden = false
+                
+                let likeCell = self.collectionView?.cellForItem(at: IndexPath(row: 2, section: index)) as! PostActionCollectionViewCell
+                let likeButton = likeCell.likeButton
+                likeButton.tintColor = .systemRed
+                
+                likeButton.setImage(UIImage(systemName:"heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium)), for: .normal)
+                
+                
+                
+                UIView.animate(withDuration: 0.2, delay: 0) {
+                    cell.heartImageView.alpha = 1
+                    cell.heartImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+                    cell.heartImageView.center = cell.contentImageView.center
+                    likeButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+                    
+                }completion: { done in
+                    if done {
+                        UIView.animate(withDuration: 0.2, delay: 0) {
+                            cell.heartImageView.alpha = 1
+                            cell.heartImageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+                            cell.heartImageView.center = cell.contentImageView.center
+                            likeButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                        }completion: { _ in
+                            
+                            UIView.animate(withDuration: 0.2, delay: 0) {
+                                cell.heartImageView.alpha = 0
+                                cell.heartImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+                                cell.heartImageView.center = cell.contentImageView.center
+                                
+                            }completion: { _ in
+                                
+                                cell.heartImageView.isHidden = true
+                                self.collectionView?.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        // add noti for user implement not done
+//        let username = UserDefaults.standard.string(forKey: "username")
+//        let id = NotificationManager.newIdentifier()
+//        let model = IGNotification(identifier: id,
+//                                   notificationType: 1,
+//                                   profilePictureUrlString: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg",
+//                                   username: "ElonMusk11",
+//                                   dateString: String.date(from: Date()) ?? "Now",
+//                                   isFollowing: nil, postId: "123",
+//                                   PostUrl: "https://www.planetware.com/wpimages/2020/01/iceland-in-pictures-beautiful-places-to-photograph-jokulsarlon-glacier-lagoon.jpg")
+//        NotificationManager.shared.create(notification: model, for: username ?? "jjchau")
         
         
     }
@@ -371,8 +441,45 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
         present(actionSheet,animated: true)
     }
     
-    func PostActionCollectionViewCelldidTapLikeButton(_ cell: PostActionCollectionViewCell, isLike: Bool, index:Int) {
-        //call db to update like state
+    func PostActionCollectionViewCelldidTapLikeButton(_ cell: PostActionCollectionViewCell, toLike: Bool, index:Int) {
+        let model = allPosts[index]
+        
+        print("3\(toLike)")
+        DatabaseManager.shared.updateLike(state: .like, postID: model.post.id, owner: model.owner) { success in
+            guard let currentUser = UserDefaults.standard.string(forKey: "username") else {return}
+            if success{
+                
+                var likers:[String] = []
+                
+                switch self.viewModels[index][3]{
+                case .likeCount(let model):
+                    likers = model.likers
+                    switch toLike {
+                    case true: // to like
+                        
+                        print("4\(toLike)")
+                        likers.appendIfNotContains(currentUser)
+                        print(likers)
+                    case false: // to unlike
+                        guard let currentUserIndex = likers.firstIndex(of: currentUser) else {return}
+                        
+                        print("5\(toLike)")
+                        likers.remove(at: currentUserIndex)
+                        print(likers)
+                    }
+                    
+                default: print("never")
+                    
+                }
+                self.viewModels[index][2] = .actions(ViewModel: PostActionCollectionViewCellViewModel(isLiked: likers.contains(currentUser)))
+                self.viewModels[index][3] = .likeCount(ViewModel: PostLikesCollectionViewCellViewModel(likers: likers ))
+                self.collectionView?.reloadData()
+                
+                
+                
+            }
+        }
+        
         
     }
     

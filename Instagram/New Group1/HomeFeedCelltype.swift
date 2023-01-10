@@ -14,4 +14,5 @@ enum HomeFeedCellType {
     case likeCount(ViewModel:PostLikesCollectionViewCellViewModel)
     case caption(ViewModel:PostCaptionCollectionViewCellViewModel)
     case timestamp(ViewModel:PostDateTimeCollectionViewCellViewModel)
+    case comment(comment:Comment)
 }

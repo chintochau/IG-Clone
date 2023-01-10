@@ -12,7 +12,7 @@ class PostDateTimeCollectionViewCell: UICollectionViewCell {
     
     private let dateLabel:UILabel = {
         let label = UILabel()
-        label.textColor = .label
+        label.textColor = .tertiaryLabel
         return label
     }()
     
