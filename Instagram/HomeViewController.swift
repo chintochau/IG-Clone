@@ -17,6 +17,9 @@ class HomeViewController: UIViewController {
     
     private var allPosts:[(post:Post,owner:String)] = []
     
+    private var stories:[Story] = []
+    private var users:[String] = []
+    
     private var observer: NSObjectProtocol?
     
     private let activityIndicator:UIActivityIndicatorView = {
@@ -62,7 +65,19 @@ class HomeViewController: UIViewController {
         DatabaseManager.shared.following(for: username) { usernames in
             
             defer {userGroup.leave()}
+            
+            
             let users = usernames + [username]
+            self.users = users
+            
+            users.forEach { username in
+                StorageManager.shared.profilePictureURL(for: username) { url in
+                    self.stories.append(Story(username: username, image: url))
+                }
+            }
+            
+            
+            
             for current in users {
                 
                 
@@ -145,7 +160,7 @@ class HomeViewController: UIViewController {
         StorageManager.shared.profilePictureURL(for: username) { [weak self] profileURL in
             guard let postURL = URL(string: post.postUrlString), let profileURL = profileURL,
             let currentUser = UserDefaults.standard.string(forKey: "username") else {
-                fatalError("faile to get url") }
+                fatalError("failed to get url") }
             
             let postData:[HomeFeedCellType] = [
                 .poster(ViewModel: PosterCollectionViewCellViewModel(username: username, profilePictureUrl: profileURL)),
@@ -155,6 +170,8 @@ class HomeViewController: UIViewController {
                 .caption(ViewModel: PostCaptionCollectionViewCellViewModel(username: username, caption: post.caption)),
                 .timestamp(ViewModel: PostDateTimeCollectionViewCellViewModel(date: DateFormatter.formatter.date(from: post.postedDate) ?? Date()))
             ]
+            
+            
             self?.viewModels.append(postData)
             completion(true)
         }
@@ -214,6 +231,19 @@ extension HomeViewController:UICollectionViewDelegate, UICollectionViewDataSourc
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: StoryHeaderView.identifier, for: indexPath) as! StoryHeaderView
+            
+            view.configure(with: StoriesViewModel(stories: stories))
+            
+            return view
+        default: break
+        }
+        return UICollectionReusableView()
+    }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModels.count
     }
@@ -307,7 +337,22 @@ extension HomeViewController {
                     
                     // Section
                     let section =  NSCollectionLayoutSection(group: group)
+                    if index == 0 {
+                        
+                        section.boundarySupplementaryItems = [
+                        NSCollectionLayoutBoundarySupplementaryItem(
+                            layoutSize: NSCollectionLayoutSize(
+                                widthDimension: .fractionalWidth(1),
+                                heightDimension: .estimated(100)
+                            ),
+                            elementKind: UICollectionView.elementKindSectionHeader,
+                            alignment: .top
+                        )
+                        
+                        ]
+                    }
                     section.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 0, bottom: 3, trailing: 0)
+                    
                     return section
                 })
         )
@@ -318,7 +363,7 @@ extension HomeViewController {
         collectionView.register(PostActionCollectionViewCell.self, forCellWithReuseIdentifier: PostActionCollectionViewCell.identifier)
         collectionView.register(PostDateTimeCollectionViewCell.self, forCellWithReuseIdentifier: PostDateTimeCollectionViewCell.identifier)
         collectionView.register(PostCaptionCollectionViewCell.self, forCellWithReuseIdentifier: PostCaptionCollectionViewCell.identifier)
-        
+        collectionView.register(StoryHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: StoryHeaderView.identifier)
         
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
@@ -379,21 +424,20 @@ extension HomeViewController:PosterCollectionViewCellDelegate,PostActionCollecti
                 }completion: { done in
                     if done {
                         UIView.animate(withDuration: 0.2, delay: 0) {
-                            cell.heartImageView.alpha = 1
                             cell.heartImageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
                             cell.heartImageView.center = cell.contentImageView.center
                             likeButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                         }completion: { _ in
                             
-                            UIView.animate(withDuration: 0.2, delay: 0) {
-                                cell.heartImageView.alpha = 0
+                            UIView.animate(withDuration: 0.3, delay: 0) {
                                 cell.heartImageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
                                 cell.heartImageView.center = cell.contentImageView.center
                                 
                             }completion: { _ in
                                 
-                                cell.heartImageView.isHidden = true
                                 self.collectionView?.reloadData()
+                                cell.heartImageView.alpha = 0
+                                cell.heartImageView.isHidden = true
                             }
                         }
                     }
